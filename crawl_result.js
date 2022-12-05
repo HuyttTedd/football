@@ -20,7 +20,7 @@ app.use(express.json()); // New
 
 // MySQL Code goes here
 const pool  = mysql.createPool({
-    connectionLimit : 10,
+    connectionLimit : 1000,
     host            : 'localhost',
     user            : 'root',
     password        : '',
@@ -40,7 +40,7 @@ async function makeResult(url, fileIndex) {
      ]});
     const page = await browser.newPage();
     await page.goto(url);
-    await page.waitForTimeout(6000);
+    await page.waitForTimeout(4500);
 
     const dataText = await page.evaluate(() => {
         document.querySelector('.setit').click();
@@ -228,7 +228,7 @@ async function makeResult(url, fileIndex) {
     });
     await page.waitForTimeout(5000);
 
-    fs.writeFileSync('result_text/' + 'data'+fileIndex+'.txt', dataText);
+    fs.writeFileSync('result_text/' + 'data'+fileIndex+'.txt', JSON.stringify(pageData));
     await browser.close();
 
     return pageData;
@@ -248,13 +248,14 @@ app.get('', async (req, res) => {
     let renderData = await test();
     let mess = 'error';
     let leagueId;
+    let statusInsertLeague = 0;
     if (renderData) {
         mess = 'done';
         pool.getConnection(async (err, connection) => {
             if(err) throw err
             // console.log('connected as id ' + connection.threadId)
             
-            for await (let row of renderData) {
+            for (let row of renderData) {
                 leagueId = await getLeagueId(row['leagueName']);
                 //     console.log(row['leagueName']);
                     console.log(leagueId);
@@ -267,16 +268,17 @@ app.get('', async (req, res) => {
                 // console.log(leagueId);
                 // console.log('+++++++++++++++');
                 if (!leagueId) {
-                    var sqlInsert = "INSERT INTO league_entity(name)" + 
-                                " VALUES ('"+ row['leagueName'] +"')";
-                    connection.query(sqlInsert, function (e, result, fields) {
-                        if (e) console.log(row['leagueName'] + " insert fail: " + e);
-                        console.log("1 record inserted");
-                    });
-                    leagueId = getLeagueId(row['leagueName']);
+                    statusInsertLeague = await insertLeague(row['leagueName']);
+                    console.log('status INSERT start');
+                    console.log(statusInsertLeague);
+                    console.log('status INSERT');
+                    leagueId = await getLeagueId(row['leagueName']);
                 }
-                var sql = "INSERT INTO match_entity(datetime, home_club_id, away_club_id, home_position, away_position, home_corner, away_corner, total_corner, odd)" + 
-                " VALUES ("+ row['leagueName'] +")";
+
+                if (statusInsertLeague || leagueId) {
+                    var sql = "INSERT INTO match_entity(datetime, home_club_id, away_club_id, home_position, away_position, home_corner, away_corner, total_corner, odd)" + 
+                                " VALUES ("+ row['leagueName'] +")";
+                }
             }
         })
     }
@@ -293,17 +295,40 @@ app.get('', async (req, res) => {
 //     }); 
 // } 
 
+async function insertLeague(leagueName) {
+    return new Promise( (resolve) => {
+        pool.getConnection((err, connection) => {
+            if(err) throw err
+            var sqlInsert = "INSERT INTO league_entity(name)" + 
+                                " VALUES ('"+ leagueName +"')";
+            connection.query(sqlInsert, (e, result, fields) => {
+                connection.release();
+                if (e) {
+                    console.log(leagueName + " insert fail: " + e);
+                    resolve(0);
+                } else {
+                    console.log("1 record inserted " + leagueName);
+                    resolve(1);
+                }
+            })
+        });
+    }).then((response) => {
+        return response;
+    }); 
+}
+
 async function getLeagueId(leagueName) {
     return new Promise( (resolve) => {
         pool.getConnection(async (err, connection) => {
             let id = 0;
             if(err) throw err
             connection.query("SELECT * FROM league_entity WHERE name = '" + leagueName + "'", (err, rows) => {
+                connection.release();
+                console.log(rows);
                 if (!err) {
                     if (rows.length == 1) {
                         id = rows[0].entity_id;
                     }
-                connection.release();
                 resolve(id);
                 } else {
                     console.log(err);
