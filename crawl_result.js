@@ -23,9 +23,8 @@ const pool  = mysql.createPool({
     connectionLimit : 1000,
     host            : 'localhost',
     user            : 'root',
-    password        : 'admin123',
-    database        : 'football',
-    port            : '3309'
+    password        : '',
+    database        : 'football'
 });
 
 // Listen on enviroment port or 5000
@@ -327,6 +326,22 @@ async function insertMatch(data, leagueId) {
     return new Promise( (resolve) => {
         pool.getConnection((err, connection) => {
             if(err) throw err
+
+            let odd = data['odd'];
+            let realOdd;
+            if (!isNaN(odd)) {
+                realOdd = odd;
+            } else {
+                if (odd.includes('-') && odd.includes('/')) {
+                    oddSplit = odd.split('/');
+                    realOdd = -1 * (oddSplit[1] - 0.25);
+                }
+                if (!odd.includes('-') && odd.includes('/')) {
+                    oddSplit = odd.split('/');
+                    realOdd = oddSplit[1] - 0.25;
+                }
+            }
+            data['odd'] = realOdd;
             let sqlInsert = "INSERT INTO match_entity(league_id, datetime, home_name, away_name, home_position, away_position, home_corner, away_corner, total_corner, odd)" + 
                                 " VALUES ('"+ leagueId +"','"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','"+ data['homePosition'] +"','"+ data['awayPosition'] +"','"+ data['homeCorner'] +"','"+ data['awayCorner'] +"','"+ data['totalCorner'] +"','"+ data['odd'] +"')";
             connection.query(sqlInsert, (e, result, fields) => {
