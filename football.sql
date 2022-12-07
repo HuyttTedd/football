@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 4.9.5deb2
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 06, 2022 lúc 06:17 PM
--- Phiên bản máy phục vụ: 10.4.19-MariaDB
--- Phiên bản PHP: 7.3.28
+-- Host: localhost:3306
+-- Generation Time: Dec 07, 2022 at 06:05 PM
+-- Server version: 8.0.31-0ubuntu0.20.04.1
+-- PHP Version: 7.4.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,22 +19,22 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `football`
+-- Database: `football`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `club_entity`
+-- Table structure for table `club_entity`
 --
 
 CREATE TABLE `club_entity` (
-  `entity_id` int(11) NOT NULL,
+  `entity_id` int NOT NULL,
   `name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `club_entity`
+-- Dumping data for table `club_entity`
 --
 
 INSERT INTO `club_entity` (`entity_id`, `name`) VALUES
@@ -42,17 +43,17 @@ INSERT INTO `club_entity` (`entity_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `eav_entity_type`
+-- Table structure for table `eav_entity_type`
 --
 
 CREATE TABLE `eav_entity_type` (
-  `entity_type_id` smallint(6) NOT NULL,
+  `entity_type_id` smallint NOT NULL,
   `entity_type_code` varchar(50) DEFAULT NULL,
   `entity_table` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `eav_entity_type`
+-- Dumping data for table `eav_entity_type`
 --
 
 INSERT INTO `eav_entity_type` (`entity_type_id`, `entity_type_code`, `entity_table`) VALUES
@@ -62,27 +63,27 @@ INSERT INTO `eav_entity_type` (`entity_type_id`, `entity_type_code`, `entity_tab
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `league_club`
+-- Table structure for table `league_club`
 --
 
 CREATE TABLE `league_club` (
-  `league_id` int(11) NOT NULL,
-  `club_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `league_id` int NOT NULL,
+  `club_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `league_entity`
+-- Table structure for table `league_entity`
 --
 
 CREATE TABLE `league_entity` (
-  `entity_id` int(11) NOT NULL,
+  `entity_id` int NOT NULL,
   `name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `league_entity`
+-- Dumping data for table `league_entity`
 --
 
 INSERT INTO `league_entity` (`entity_id`, `name`) VALUES
@@ -90,10 +91,17 @@ INSERT INTO `league_entity` (`entity_id`, `name`) VALUES
 (6, 'BEL U21'),
 (15, 'BHR D'),
 (20, 'CHA CSL'),
+(34, 'CHA D1'),
 (12, 'CYP D1'),
+(32, 'EGY D1'),
 (4, 'ENG CN'),
+(23, 'ENG Conf'),
+(24, 'ENG CS'),
+(26, 'ENG RYM'),
 (17, 'ENG U21D2'),
 (7, 'ENG U21LC'),
+(27, 'ENG-S CE'),
+(25, 'ENG-S PR'),
 (13, 'FRA D3'),
 (16, 'GRE D2'),
 (19, 'IDN ISL'),
@@ -101,130 +109,201 @@ INSERT INTO `league_entity` (`entity_id`, `name`) VALUES
 (9, 'INT CF'),
 (5, 'ITA C1'),
 (1, 'JAM D1'),
+(28, 'NIR LC'),
 (21, 'Por U23'),
 (2, 'PORLC'),
 (10, 'ROM D1'),
+(31, 'ROMC'),
+(30, 'SLO D1'),
 (3, 'SPA D2'),
+(29, 'SPDRFEF'),
 (11, 'TFF 1. Lig'),
+(33, 'TTLd'),
 (18, 'UAE'),
 (8, 'World Cup');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `less_position_but_higher_odd_match`
+-- Table structure for table `less_position_but_higher_odd_match`
 --
 
 CREATE TABLE `less_position_but_higher_odd_match` (
-  `entity_id` int(11) NOT NULL,
-  `datetime` datetime NOT NULL,
+  `entity_id` int NOT NULL,
+  `datetime` varchar(200) NOT NULL,
   `home_name` varchar(200) NOT NULL,
   `away_name` varchar(200) NOT NULL,
-  `result` int(11) NOT NULL COMMENT '2 is not set, 1 is win, 0 is lose',
-  `position_range` int(11) NOT NULL,
+  `result` int NOT NULL COMMENT '3 is draw, 2 is not set, 1 is win, 0 is lose, 4 is not found',
+  `position_range` int NOT NULL,
   `odd` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `less_position_but_higher_odd_match`
+-- Dumping data for table `less_position_but_higher_odd_match`
 --
 
 INSERT INTO `less_position_but_higher_odd_match` (`entity_id`, `datetime`, `home_name`, `away_name`, `result`, `position_range`, `odd`) VALUES
-(75, '2022-12-06 18:00:00', 'UD Logrones', 'Real Sociedad B', 2, 12, '0.25'),
-(76, '2022-12-06 19:45:00', 'Cheshunt', 'Dover Athletic', 2, 10, '0.75'),
-(77, '2022-12-06 19:45:00', 'Hemel Hempstead Town', 'Bath City', 2, 3, '0.25'),
-(78, '2022-12-06 19:45:00', 'Slough Town', 'Concord Rangers', 2, 1, '0.5'),
-(79, '2022-12-06 19:45:00', 'Tonbridge Angels', 'Eastbourne Borough', 2, 1, '0.75'),
-(80, '2022-12-06 19:45:00', 'Hereford', 'Chorley', 2, 7, '0.75'),
-(81, '2022-12-06 19:45:00', 'Kettering Town', 'Gloucester City', 2, 10, '0.75'),
-(82, '2022-12-06 19:45:00', 'Leamington', 'Brackley Town', 2, 13, '0.75'),
-(83, '2022-12-06 19:45:00', 'Spennymoor Town', 'Boston United', 2, 4, '0.25'),
-(84, '2022-12-06 19:45:00', 'Glentoran FC', 'Linfield FC', 2, 2, '0.25'),
-(85, '2022-12-06 19:45:00', 'Coalville Town', 'Nuneaton Town', 2, 3, '0.5');
+(75, '2022-12-06 18:00:00', 'UD Logrones', 'Real Sociedad B', 0, 12, '0.25'),
+(76, '2022-12-06 19:45:00', 'Cheshunt', 'Dover Athletic', 1, 10, '0.75'),
+(77, '2022-12-06 19:45:00', 'Hemel Hempstead Town', 'Bath City', 1, 3, '0.25'),
+(78, '2022-12-06 19:45:00', 'Slough Town', 'Concord Rangers', 0, 1, '0.5'),
+(79, '2022-12-06 19:45:00', 'Tonbridge Angels', 'Eastbourne Borough', 1, 1, '0.75'),
+(80, '2022-12-06 19:45:00', 'Hereford', 'Chorley', 0, 7, '0.75'),
+(81, '2022-12-06 19:45:00', 'Kettering Town', 'Gloucester City', 0, 10, '0.75'),
+(82, '2022-12-06 19:45:00', 'Leamington', 'Brackley Town', 0, 13, '0.75'),
+(83, '2022-12-06 19:45:00', 'Spennymoor Town', 'Boston United', 1, 4, '0.25'),
+(84, '2022-12-06 19:45:00', 'Glentoran FC', 'Linfield FC', 0, 2, '0.25'),
+(85, '2022-12-06 19:45:00', 'Coalville Town', 'Nuneaton Town', 0, 3, '0.5'),
+(86, '2022-12-07 11:00:00', 'Duzcespor', 'Corum Belediyespor', 2, 2, '0.75'),
+(87, '2022-12-07 12:00:00', 'Hertha BSC Berlin', 'Eintr. Braunschweig', 2, 1, '1.25'),
+(88, '2022-12-07 12:35:00', 'Ittihad Kalba', 'Al-Thaid', 2, 1, '1.5'),
+(89, '2022-12-07 12:40:00', 'CLB Oman', 'Sohar Club', 2, 4, '0.75'),
+(90, '2022-12-07 13:00:00', 'Bochum', 'FC Zwolle', 2, 15, '1.5'),
+(91, '2022-12-07 13:30:00', 'Viterbese', 'Vicenza', 2, 18, '0.75'),
+(92, '2022-12-07 13:30:00', 'Foggia', 'Catanzaro', 2, 8, '0.25'),
+(93, '2022-12-07 13:30:00', 'Paris Saint Germain(U19)', 'U19 Valenciennes US', 2, 2, '1.5'),
+(94, '2022-12-07 15:00:00', 'JS Kabylie', 'RC Arba', 2, 6, '0.75'),
+(95, '2022-12-07 16:30:00', 'Domzale', 'NK Publikum Celje', 2, 4, '0.75'),
+(96, '2022-12-07 17:00:00', 'Inter Milan', 'Red Bull Salzburg', 2, 4, '0.75'),
+(97, '2022-12-07 17:00:00', 'Celta Vigo', 'Boavista (FC)', 2, 11, '1'),
+(98, '2022-12-07 17:00:00', 'Fiorentina', 'Always Ready', 2, 8, '2.75'),
+(99, '2022-12-07 17:00:00', 'Sektzia Nes Tziona', 'Hapoel Haifa', 2, 1, '0.75'),
+(100, '2022-12-07 18:00:00', 'Universitaea Cluj', 'FC Rapid Bucuresti', 2, 11, '0.75'),
+(101, '2022-12-07 18:00:00', 'Padova', 'JuventusU23', 2, 3, '0.25'),
+(102, '2022-12-07 18:15:00', 'Maccabi Netanya', 'Hapoel Hadera', 2, 3, '0.5'),
+(103, '2022-12-07 19:00:00', 'Sevilla', 'AS Monaco', 2, 12, '0.25'),
+(104, '2022-12-07 19:30:00', 'Kidderminster', 'Chester FC', 2, 7, '0.5'),
+(105, '2022-12-07 19:45:00', 'Bognor Regis Town', 'Cray Wanderers', 2, 6, '0.25'),
+(106, '2022-12-07 20:00:00', 'Tenerife', 'Alaves', 2, 13, '0.25'),
+(107, '2022-12-07 20:00:00', 'Algeciras', 'Linense', 2, 2, '0.25'),
+(108, '2022-12-07 20:00:00', 'Talavera de la Reina', 'Celta Vigo B', 2, 6, '0.75'),
+(109, '2022-12-07 20:00:00', 'Nữ Arsenal', 'Nữ Juventus', 2, 1, '1.25'),
+(110, '2022-12-08 01:00:00', 'Club Comunicaciones', 'Coban Imperial', 2, 1, '1');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `match_entity`
+-- Table structure for table `match_entity`
 --
 
 CREATE TABLE `match_entity` (
-  `entity_id` int(11) NOT NULL,
-  `league_id` int(11) NOT NULL,
-  `datetime` datetime NOT NULL,
-  `home_club_id` int(11) DEFAULT NULL,
-  `away_club_id` int(11) DEFAULT NULL,
+  `entity_id` int NOT NULL,
+  `league_id` int NOT NULL,
+  `datetime` varchar(200) NOT NULL,
+  `home_club_id` int DEFAULT NULL,
+  `away_club_id` int DEFAULT NULL,
   `home_name` varchar(200) NOT NULL,
   `away_name` varchar(200) NOT NULL,
-  `home_position` int(11) NOT NULL,
-  `away_position` int(11) NOT NULL,
-  `home_corner` int(11) DEFAULT NULL,
-  `away_corner` int(11) DEFAULT NULL,
-  `total_corner` int(11) DEFAULT NULL,
+  `home_result` int DEFAULT NULL,
+  `away_result` int DEFAULT NULL,
+  `home_position` int NOT NULL,
+  `away_position` int NOT NULL,
+  `home_corner` int DEFAULT NULL,
+  `away_corner` int DEFAULT NULL,
+  `total_corner` int DEFAULT NULL,
   `odd` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `match_entity`
+-- Dumping data for table `match_entity`
 --
 
-INSERT INTO `match_entity` (`entity_id`, `league_id`, `datetime`, `home_club_id`, `away_club_id`, `home_name`, `away_name`, `home_position`, `away_position`, `home_corner`, `away_corner`, `total_corner`, `odd`) VALUES
-(1, 19, '2022-12-06 08:30:00', NULL, NULL, 'Persebaya Surabaya', 'Barito Putera', 11, 17, 3, 3, 6, '1'),
-(2, 22, '2022-12-06 08:30:00', NULL, NULL, 'Real Kashmir FC', 'Sreenidi Deccan', 1, 2, 9, 1, 10, '0.25'),
-(3, 1, '2022-12-06 00:30:00', NULL, NULL, 'Arnett Gardens', 'Molynes United', 5, 8, 6, 9, 15, '0.75'),
-(4, 1, '2022-12-05 22:00:00', NULL, NULL, 'Chapelton', 'Portmore United', 12, 11, 2, 9, 11, '-0.5'),
-(5, 2, '2022-12-05 20:45:00', NULL, NULL, 'CD Mafra', 'Vizela', 12, 13, 5, 7, 12, '0.75'),
-(6, 3, '2022-12-05 20:00:00', NULL, NULL, 'SD Ponferradina', 'Burgos CF', 20, 3, 6, 0, 6, '0'),
-(7, 4, '2022-12-05 19:45:00', NULL, NULL, 'Bradford Park Avenue', 'AFC Telford United', 18, 24, 2, 4, 6, '0'),
-(8, 5, '2022-12-05 19:30:00', NULL, NULL, 'Delfino Pescara 1936', 'Taranto Sport', 3, 17, 5, 1, 6, '1.75'),
-(9, 6, '2022-12-05 19:00:00', NULL, NULL, 'Deinze U21', 'U21 Kortrijk', 12, 7, 4, 10, 14, '-0.5'),
-(10, 6, '2022-12-05 19:00:00', NULL, NULL, 'RWD Molenbeek U21', 'U21 AS Eupen', 9, 3, 4, 8, 12, '-0.75'),
-(11, 6, '2022-12-05 19:00:00', NULL, NULL, 'U21 Westerlo', 'U21 Lommel SK', 5, 6, 2, 2, 4, '0.5'),
-(12, 7, '2022-12-05 19:00:00', NULL, NULL, 'U21 Hull City', 'U21 Charlton Athletic', 11, 7, 6, 3, 9, '0.25'),
-(13, 7, '2022-12-05 19:00:00', NULL, NULL, 'U21 Newcastle', 'U21 Sheffield Utd', 6, 3, 7, 4, 11, '0.75'),
-(14, 8, '2022-12-05 19:00:00', NULL, NULL, 'Brazil', 'Hàn Quốc', 1, 28, 5, 4, 9, '1.75'),
-(15, 6, '2022-12-05 18:30:00', NULL, NULL, 'U21 St.-Truidense', 'FCV Dender EH U21', 2, 10, 6, 4, 10, '1.25'),
-(16, 6, '2022-12-05 18:30:00', NULL, NULL, 'U21 RS Waasland Beveren', 'Lierse U21', 4, 8, 13, 3, 16, '0.5'),
-(17, 9, '2022-12-05 17:30:00', NULL, NULL, 'Gzira United', 'Inter Milan', 4, 5, 1, 11, 12, '-3.75'),
-(18, 10, '2022-12-05 17:10:00', NULL, NULL, 'Steaua Bucuresti', 'CS Mioveni', 5, 16, 7, 3, 10, '1.25'),
-(19, 11, '2022-12-05 17:00:00', NULL, NULL, 'Rizespor', 'Pendikspor', 4, 5, 3, 4, 7, '0.25'),
-(20, 12, '2022-12-05 17:00:00', NULL, NULL, 'Omonia Nicosia FC', 'Karmiotissa Pano Polemidion', 7, 9, 4, 5, 9, '1.25'),
-(21, 13, '2022-12-05 17:00:00', NULL, NULL, 'Versailles 78', 'CS Sedan Ardennes', 5, 13, 0, 3, 3, '0.25'),
-(22, 9, '2022-12-05 15:59:00', NULL, NULL, 'Aris Limassol', 'PAOK Saloniki', 3, 4, 1, 5, 6, '-1.25'),
-(23, 14, '2022-12-05 15:00:00', NULL, NULL, 'FC Avan Academy', 'FC Pyunik', 2, 4, 10, 3, 13, '0.25'),
-(24, 8, '2022-12-05 15:00:00', NULL, NULL, 'Nhật Bản', 'Croatia', 24, 12, 5, 4, 9, '-0.5'),
-(25, 15, '2022-12-05 15:00:00', NULL, NULL, 'Etehad Alreef', 'Busaiteen', 11, 2, 1, 8, 9, '-1.25'),
-(26, 15, '2022-12-05 15:00:00', NULL, NULL, 'Malkia', 'Buri', 3, 10, 4, 4, 8, '0.75'),
-(27, 15, '2022-12-05 15:00:00', NULL, NULL, 'Al-Tadhmon', 'Al-Najma', 12, 1, 2, 4, 6, '-1.25'),
-(28, 9, '2022-12-05 15:00:00', NULL, NULL, 'Sturm Graz', 'Empoli', 2, 13, 6, 4, 10, '0'),
-(29, 7, '2022-12-05 14:00:00', NULL, NULL, 'U21 Crystal Palace', 'U21 Bristol City', 5, 1, 8, 4, 12, '0.75'),
-(30, 16, '2022-12-05 13:15:00', NULL, NULL, 'Kallithea', 'AEK Athens B', 8, 9, 5, 8, 13, '1'),
-(31, 16, '2022-12-05 13:00:00', NULL, NULL, 'Apollon Kalamaria', 'Apollon Larissas', 14, 9, 3, 2, 5, '1'),
-(32, 17, '2022-12-05 13:00:00', NULL, NULL, 'U21 Crewe Alexandra', 'U21 Barnsley', 19, 17, 8, 6, 14, '0.25'),
-(33, 18, '2022-12-05 12:40:00', NULL, NULL, 'Al Fujairah Club', 'Hatta', 14, 5, 2, 6, 8, '-0.75'),
-(34, 18, '2022-12-05 12:40:00', NULL, NULL, 'Al Bataeh', 'Al-Jazira Al-Hamra', 9, 3, 3, 4, 7, '1.25'),
-(35, 18, '2022-12-05 12:40:00', NULL, NULL, 'City Club', 'Al Nasr Dubai', 15, 12, 0, 9, 9, '-3');
+INSERT INTO `match_entity` (`entity_id`, `league_id`, `datetime`, `home_club_id`, `away_club_id`, `home_name`, `away_name`, `home_result`, `away_result`, `home_position`, `away_position`, `home_corner`, `away_corner`, `total_corner`, `odd`) VALUES
+(1, 19, '2022-12-07 08:15:00', NULL, NULL, 'Dewa United FC', 'Arema Malang', 0, 2, 15, 12, 4, 4, 8, '-0.5'),
+(2, 34, '2022-12-07 06:00:00', NULL, NULL, 'Beikong Bắc Kinh', 'Jiangxi Liansheng', 0, 1, 6, 4, 5, 0, 5, '0.75'),
+(3, 34, '2022-12-07 06:00:00', NULL, NULL, 'Guangxi Baoyun FC', 'Thanh Đảo Jonoon', 2, 2, 4, 1, 2, 3, 5, '-0.5'),
+(4, 34, '2022-12-07 06:00:00', NULL, NULL, 'Xinjiang Tianshan Leopard', 'Tech Bắc Kinh', 0, 3, 5, 6, 4, 8, 12, '0'),
+(5, 34, '2022-12-07 06:00:00', NULL, NULL, 'Heilongjiang Lava Spring', 'Shanxi Chang An Athletic FC', 2, 1, 2, 3, 9, 3, 12, '0.75'),
+(6, 34, '2022-12-07 06:00:00', NULL, NULL, 'Hebei Gongfu', 'Nanjing City', 1, 3, 1, 4, 2, 3, 5, '-0.75'),
+(7, 2, '2022-12-06 20:45:00', NULL, NULL, 'GD Estoril-Praia', 'SC Uniao Torreense', 2, 2, 12, 15, 5, 1, 6, '0.5'),
+(8, 3, '2022-12-06 20:00:00', NULL, NULL, 'Albacete', 'Zaragoza', 0, 0, 10, 15, 7, 4, 11, '0.25'),
+(9, 23, '2022-12-06 19:45:00', NULL, NULL, 'Boreham Wood', 'Oldham Athletic AFC', 2, 1, 12, 23, 6, 5, 11, '0.5'),
+(10, 4, '2022-12-06 19:45:00', NULL, NULL, 'Curzon Ashton FC', 'Darlington', 0, 2, 18, 3, 2, 3, 5, '0'),
+(11, 4, '2022-12-06 19:45:00', NULL, NULL, 'Farsley Celtic', 'Kings Lynn', 2, 0, 23, 2, 2, 8, 10, '-0.75'),
+(12, 4, '2022-12-06 19:45:00', NULL, NULL, 'Hereford', 'Chorley', 1, 1, 17, 10, 10, 2, 12, '0.75'),
+(13, 4, '2022-12-06 19:45:00', NULL, NULL, 'Kettering Town', 'Gloucester City', 0, 1, 21, 11, 3, 2, 5, '0.75'),
+(14, 4, '2022-12-06 19:45:00', NULL, NULL, 'Leamington', 'Brackley Town', 0, 0, 14, 1, 1, 6, 7, '0.75'),
+(15, 4, '2022-12-06 19:45:00', NULL, NULL, 'Scarborough', 'Peterborough Sports', 2, 1, 6, 7, 5, 4, 9, '0'),
+(16, 4, '2022-12-06 19:45:00', NULL, NULL, 'Spennymoor Town', 'Boston United', 3, 2, 19, 15, 8, 3, 11, '0.25'),
+(17, 24, '2022-12-06 19:45:00', NULL, NULL, 'Braintree Town', 'Oxford City', 0, 0, 6, 8, 3, 2, 5, '0.75'),
+(18, 24, '2022-12-06 19:45:00', NULL, NULL, 'Cheshunt', 'Dover Athletic', 2, 0, 22, 12, 4, 6, 10, '0.75'),
+(19, 24, '2022-12-06 19:45:00', NULL, NULL, 'Dulwich Hamlet', 'Chelmsford City', 2, 1, 20, 4, 0, 9, 9, '0'),
+(20, 24, '2022-12-06 19:45:00', NULL, NULL, 'Hemel Hempstead Town', 'Bath City', 1, 0, 14, 11, 5, 6, 11, '0.25'),
+(21, 24, '2022-12-06 19:45:00', NULL, NULL, 'Slough Town', 'Concord Rangers', 0, 0, 19, 18, 5, 3, 8, '0.5'),
+(22, 24, '2022-12-06 19:45:00', NULL, NULL, 'Tonbridge Angels', 'Eastbourne Borough', 3, 0, 10, 9, 3, 4, 7, '0.75'),
+(23, 24, '2022-12-06 19:45:00', NULL, NULL, 'Welling United', 'Farnborough Town', 1, 2, 13, 15, 3, 6, 9, '0'),
+(24, 24, '2022-12-06 19:45:00', NULL, NULL, 'Worthing', 'Ebbsfleet United', 0, 6, 5, 1, 3, 6, 9, '-0.75'),
+(25, 25, '2022-12-06 19:45:00', NULL, NULL, 'Yate Town', 'Chesham United', 0, 3, 16, 3, 5, 7, 12, '-0.5'),
+(26, 25, '2022-12-06 19:45:00', NULL, NULL, 'Bracknell Town', 'Plymouth Parkway', 0, 0, 6, 19, 3, 3, 6, '0.75'),
+(27, 26, '2022-12-06 19:45:00', NULL, NULL, 'Corinthian Casuals', 'Bishop Stortford', 0, 1, 20, 3, 2, 8, 10, '-1.25'),
+(28, 26, '2022-12-06 19:45:00', NULL, NULL, 'AFC Hornchurch', 'Folkestone Invicta', 2, 1, 1, 16, 5, 2, 7, '1.5'),
+(29, 27, '2022-12-06 19:45:00', NULL, NULL, 'Basford Utd', 'Kings Langley', 0, 1, 13, 20, 9, 5, 14, '0.5'),
+(30, 27, '2022-12-06 19:45:00', NULL, NULL, 'Coalville Town', 'Nuneaton Town', 0, 2, 6, 3, 5, 6, 11, '0.5'),
+(31, 27, '2022-12-06 19:45:00', NULL, NULL, 'Needham Market', 'Hednesford Town', 1, 0, 16, 22, 2, 5, 7, '0.5'),
+(32, 27, '2022-12-06 19:45:00', NULL, NULL, 'Rushall Olympic', 'Leiston FC', 0, 2, 4, 2, 3, 5, 8, '0'),
+(33, 28, '2022-12-06 19:45:00', NULL, NULL, 'Glentoran FC', 'Linfield FC', 0, 3, 5, 3, 2, 5, 7, '0.25'),
+(34, 28, '2022-12-06 19:45:00', NULL, NULL, 'Cliftonville', 'Coleraine', 1, 1, 4, 6, 3, 5, 8, '0.25'),
+(35, 23, '2022-12-06 19:45:00', NULL, NULL, 'Halifax Town', 'Dorking Wanderers', 3, 1, 14, 16, 5, 3, 8, '0.5'),
+(36, 29, '2022-12-06 19:00:00', NULL, NULL, 'CF La Nucia', 'CF Intercity', 0, 0, 12, 18, 6, 2, 8, '0'),
+(37, 29, '2022-12-06 19:00:00', NULL, NULL, 'CD Badajoz', 'Deportivo La Coruna', 1, 0, 16, 5, 8, 3, 11, '-0.5'),
+(38, 8, '2022-12-06 19:00:00', NULL, NULL, 'Bồ Đào Nha', 'Thụy Sĩ', 6, 1, 9, 15, 6, 6, 12, '0.5'),
+(39, 9, '2022-12-06 19:00:00', NULL, NULL, 'Cambridge United', 'West Ham United', 2, 4, 20, 16, 3, 8, 11, '-1.75'),
+(40, 3, '2022-12-06 18:00:00', NULL, NULL, 'Leganes', 'CD Mirandes', 2, 2, 9, 17, 2, 2, 4, '0.5'),
+(41, 3, '2022-12-06 18:00:00', NULL, NULL, 'Real Oviedo', 'Las Palmas', 0, 0, 14, 1, 3, 4, 7, '0'),
+(42, 29, '2022-12-06 18:00:00', NULL, NULL, 'UD Logrones', 'Real Sociedad B', 1, 1, 15, 3, 5, 4, 9, '0.25'),
+(43, 30, '2022-12-06 17:00:00', NULL, NULL, 'NK Maribor', 'Radomlje', 7, 0, 5, 8, 7, 4, 11, '1'),
+(44, 31, '2022-12-06 17:00:00', NULL, NULL, 'Sepsi OSK Sfantul Gheorghe', 'FC Voluntari', 4, 0, 7, 9, 3, 2, 5, '0.75'),
+(45, 31, '2022-12-06 17:00:00', NULL, NULL, 'Petrolul Ploiesti', 'Universitatea Craiova', 0, 1, 6, 13, 6, 5, 11, '0.75'),
+(46, 31, '2022-12-06 17:00:00', NULL, NULL, 'FC Unirea 2004 Slobozia', 'Dinamo Bucuresti', 3, 3, 4, 8, 9, 4, 13, '0.75'),
+(47, 9, '2022-12-06 17:00:00', NULL, NULL, 'Galatasaray', 'Villarreal', 3, 4, 2, 9, 7, 3, 10, '0.75'),
+(48, 21, '2022-12-06 15:00:00', NULL, NULL, 'Vizela U23', 'Famalicao U23', 2, 2, 1, 2, 6, 3, 9, '0.25'),
+(49, 21, '2022-12-06 15:00:00', NULL, NULL, 'Gil Vicente U23', 'Braga U23', 2, 0, 5, 3, 4, 5, 9, '0.75'),
+(50, 8, '2022-12-06 15:00:00', NULL, NULL, 'Ma Rốc', 'Tây Ban Nha', 0, 0, 22, 7, 0, 4, 4, '-1'),
+(51, 15, '2022-12-06 15:00:00', NULL, NULL, 'Al-Ittihad (BHR)', 'Um Alhassam', 0, 0, 7, 4, 7, 2, 9, '0'),
+(52, 15, '2022-12-06 15:00:00', NULL, NULL, 'Qalali', 'Isa Town', 0, 1, 6, 5, 1, 6, 7, '0'),
+(53, 22, '2022-12-06 13:30:00', NULL, NULL, 'Churchill Brothers', 'Mohammedan SC', 2, 1, 11, 6, 6, 5, 11, '0.75'),
+(54, 9, '2022-12-06 13:15:00', NULL, NULL, 'SV Ried', 'First Vienna FC', 6, 1, 11, 6, 6, 2, 8, '1'),
+(55, 30, '2022-12-06 13:00:00', NULL, NULL, 'Gorica', 'NK Bravo', 0, 0, 9, 7, 5, 5, 10, '0.75'),
+(56, 21, '2022-12-06 13:00:00', NULL, NULL, 'CD Mafra U23', 'Benfica U23', 0, 1, 7, 1, 4, 7, 11, '-1.75'),
+(57, 9, '2022-12-06 13:00:00', NULL, NULL, 'Panaitolikos Agrinio', 'Anderlecht', 1, 2, 7, 11, 2, 5, 7, '-0.75'),
+(58, 18, '2022-12-06 12:50:00', NULL, NULL, 'Al-Dhafra', 'Baynounah SC', 3, 0, 13, 16, 7, 4, 11, '2.25'),
+(59, 32, '2022-12-06 12:45:00', NULL, NULL, 'EL Masry', 'NBE SC', 0, 0, 10, 9, 2, 3, 5, '0.5'),
+(60, 18, '2022-12-06 12:40:00', NULL, NULL, 'Al Taawon', 'Al-Hamriyah', 1, 2, 9, 6, 6, 1, 7, '0.75'),
+(61, 18, '2022-12-06 12:40:00', NULL, NULL, 'Fursan Hispania FC', 'Gulf Heroes FC', 0, 2, 17, 11, 6, 3, 9, '-0.75'),
+(62, 33, '2022-12-06 12:30:00', NULL, NULL, 'A.S. Marsa', 'AS Mhamdia', 4, 1, 10, 6, 1, 4, 5, '0.75'),
+(63, 33, '2022-12-06 12:30:00', NULL, NULL, 'CS Korba', 'CS Bembla', 0, 0, 2, 11, 7, 5, 12, '0.75'),
+(64, 33, '2022-12-06 12:30:00', NULL, NULL, 'ES Rades', 'J.S. Kairouanaise', 1, 0, 5, 1, 2, 6, 8, '0.25'),
+(65, 33, '2022-12-06 12:30:00', NULL, NULL, 'Espoir Rogba', 'AS Gabes', 1, 0, 3, 8, 4, 1, 5, '0.25'),
+(66, 33, '2022-12-06 12:30:00', NULL, NULL, 'CO Medenine', 'Jerba Midoun', 1, 1, 13, 12, 14, 1, 15, '0'),
+(67, 19, '2022-12-06 11:30:00', NULL, NULL, 'Persis Solo FC', 'Cilegon United', 6, 1, 15, 16, 6, 4, 10, '0.25'),
+(68, 19, '2022-12-06 11:30:00', NULL, NULL, 'Persija Jakarta', 'Borneo FC', 1, 0, 6, 3, 7, 1, 8, '0.25'),
+(69, 29, '2022-12-06 11:05:00', NULL, NULL, 'CF Rayo Majadahonda', 'Real Madrid Castilla', 1, 2, 17, 3, 1, 9, 10, '-0.75'),
+(70, 21, '2022-12-06 11:00:00', NULL, NULL, 'Portimonense U23', 'Sporting Lisbon Sad U23', 3, 2, 5, 6, 5, 1, 6, '0.5'),
+(71, 21, '2022-12-06 11:00:00', NULL, NULL, 'Farense U23', 'Estoril U23', 4, 1, 4, 2, 2, 5, 7, '0.75'),
+(72, 29, '2022-12-06 11:00:00', NULL, NULL, 'Fuenlabrada', 'Merida AD', 0, 1, 10, 9, 4, 5, 9, '0.25'),
+(73, 29, '2022-12-06 11:00:00', NULL, NULL, 'Unionistas de Salamanca', 'Alcorcon', 2, 1, 15, 2, 3, 8, 11, '0'),
+(74, 9, '2022-12-06 11:00:00', NULL, NULL, 'Athletic Bilbao', 'Real Valladolid', 2, 0, 4, 12, 4, 6, 10, '0.25');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `new_match_today`
+-- Table structure for table `new_match_today`
 --
 
 CREATE TABLE `new_match_today` (
-  `entity_id` int(11) NOT NULL,
+  `entity_id` int NOT NULL,
   `league_name` varchar(200) DEFAULT NULL,
-  `datetime` datetime NOT NULL,
+  `datetime` varchar(200) NOT NULL,
   `home_name` varchar(200) NOT NULL,
   `away_name` varchar(200) NOT NULL,
-  `home_position` smallint(6) NOT NULL,
-  `away_position` smallint(6) NOT NULL,
+  `home_position` smallint NOT NULL,
+  `away_position` smallint NOT NULL,
   `odd` varchar(50) NOT NULL,
   `odd_converted` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `new_match_today`
+-- Dumping data for table `new_match_today`
 --
 
 INSERT INTO `new_match_today` (`entity_id`, `league_name`, `datetime`, `home_name`, `away_name`, `home_position`, `away_position`, `odd`, `odd_converted`) VALUES
@@ -272,34 +351,122 @@ INSERT INTO `new_match_today` (`entity_id`, `league_name`, `datetime`, `home_nam
 (42, 'PORLC', '2022-12-06 20:45:00', 'GD Estoril-Praia', 'SC Uniao Torreense', 12, 15, '0.5', '0.5'),
 (43, 'IND D1', '2022-12-07 11:00:00', 'Rajasthan Club', 'Kenkre', 4, 9, '1', '1'),
 (215, 'IDN ISL', '2022-12-07 08:15:00', 'Dewa United FC', 'Arema Malang', 14, 10, '-0.5', '-0.5'),
-(217, 'IDN ISL', '2022-12-07 11:15:00', 'Persik Kediri', 'Persib Bandung', 18, 8, '-0.5', '-0.5');
+(217, 'IDN ISL', '2022-12-07 11:15:00', 'Persik Kediri', 'Persib Bandung', 18, 8, '-0.5', '-0.5'),
+(348, 'UKR D1', '2022-12-07 11:00:00', 'Rukh Vynnyky', 'Chernomorets Odessa', 13, 15, '0/0.5', '0.25'),
+(349, 'TUR D3', '2022-12-07 11:00:00', 'Duzcespor', 'Corum Belediyespor', 6, 4, '0/-0.5', '0.75'),
+(352, 'MNE D1', '2022-12-07 12:00:00', 'Jedinstvo Bijelo Polje', 'FK Sutjeska Niksic', 6, 2, '-0.5/1', '-0.75'),
+(353, 'MNE D1', '2022-12-07 12:00:00', 'Arsenal Tivat', 'OFK Petrovac', 5, 4, '0', '0'),
+(354, 'TIP CUP', '2022-12-07 12:00:00', 'Viktoria Zizkov', 'Slovan Liberec', 19, 9, '-1.5', '-1.5'),
+(355, 'INT CF', '2022-12-07 12:00:00', 'Hertha BSC Berlin', 'Eintr. Braunschweig', 15, 14, '1/1.5', '1.25'),
+(356, 'TTLd', '2022-12-07 12:30:00', 'A.S Djerba', 'Sporting Ben Arous', 6, 11, '0/0.5', '0.25'),
+(357, 'TTLd', '2022-12-07 12:30:00', 'E. M. Mahdia', 'S.S. Sfaxien', 9, 12, '1/1.5', '1.25'),
+(358, 'TTLd', '2022-12-07 12:30:00', 'Kalaa Sport', 'E.Gawafel.S.Gafsa', 5, 2, '0', '0'),
+(359, 'UAE', '2022-12-07 12:35:00', 'Ittihad Kalba', 'Al-Thaid', 8, 7, '1.5', '1.5'),
+(360, 'OMA PL', '2022-12-07 12:40:00', 'CLB Oman', 'Sohar Club', 8, 4, '0/-0.5', '0.75'),
+(361, 'EGY D1', '2022-12-07 12:45:00', 'Pyramids FC', 'Arab Contractors', 6, 7, '1', '1'),
+(362, 'EGY D1', '2022-12-07 12:45:00', 'Pharco', 'El Dakhleya', 8, 18, '0.5', '0.5'),
+(363, 'UAE', '2022-12-07 12:45:00', 'Al Wasl FC', 'Masafi', 3, 8, '2/2.5', '2.25'),
+(364, 'GRE D2', '2022-12-07 13:00:00', 'Apollon Smirnis', 'Olympiakos Piraeus B', 4, 13, '0.5', '0.5'),
+(365, 'GRE D2', '2022-12-07 13:00:00', 'Rouf FC', 'AE Kifisias', 15, 1, '-1.5', '-1.5'),
+(366, 'INT CF', '2022-12-07 13:00:00', 'Bochum', 'FC Zwolle', 17, 2, '1.5', '1.5'),
+(367, 'OMA PL', '2022-12-07 13:05:00', 'Dhofar', 'Al Oruba Sur', 6, 13, '1', '1'),
+(368, 'ITA PRO LC', '2022-12-07 13:30:00', 'Viterbese', 'Vicenza', 19, 1, '0/-0.5', '0.75'),
+(369, 'ITA PRO LC', '2022-12-07 13:30:00', 'Foggia', 'Catanzaro', 9, 1, '0/0.5', '0.25'),
+(370, 'INT CF', '2022-12-07 13:30:00', 'Grasshoppers', 'FC Luzern', 7, 6, '0', '0'),
+(371, 'IND D1', '2022-12-07 13:30:00', 'Gokulam', 'Sudeva Delhi', 5, 12, '1/1.5', '1.25'),
+(372, 'FRA U19', '2022-12-07 13:30:00', 'Paris Saint Germain(U19)', 'U19 Valenciennes US', 6, 4, '1.5', '1.5'),
+(373, 'ALG D1', '2022-12-07 14:00:00', 'HB Chelghoum Laid', 'US Biskra', 16, 13, '-0.5', '-0.5'),
+(374, 'ALG D1', '2022-12-07 14:00:00', 'CS Constantine', 'ASO Chlef', 2, 9, '1', '1'),
+(375, 'ALG D1', '2022-12-07 14:00:00', 'El Bayadh', 'ES Setif', 10, 3, '0', '0'),
+(376, 'ALG D1', '2022-12-07 14:00:00', 'USM Khenchela', 'MC Magra', 6, 11, '0.5/1', '0.75'),
+(377, 'ALG D1', '2022-12-07 14:00:00', 'Paradou AC', 'JS Saoura', 15, 4, '0', '0'),
+(378, 'ALG D1', '2022-12-07 14:00:00', 'USM Alger', 'CR Belouizdad', 7, 1, '0', '0'),
+(379, 'SLO D1', '2022-12-07 14:00:00', 'FC Koper', 'Tabor Sezana', 5, 10, '1', '1'),
+(380, 'MNE D1', '2022-12-07 14:00:00', 'FK Iskra Danilovgrad', 'FK Buducnost Podgorica', 10, 1, '-0.5/1', '-0.75'),
+(381, 'BHR D1', '2022-12-07 14:30:00', 'Al Hidd', 'Al Riffa Club', 5, 2, '-1', '-1'),
+(382, 'ALG D1', '2022-12-07 15:00:00', 'JS Kabylie', 'RC Arba', 14, 8, '0.5/1', '0.75'),
+(383, 'ROMC', '2022-12-07 15:00:00', 'SCM Argesul Pitesti', 'CS Universitatea Craiova', 10, 5, '-0.5/1', '-0.75'),
+(384, 'ROMC', '2022-12-07 15:00:00', 'Hermannstadt', 'Chindia Targoviste', 8, 11, '0.5', '0.5'),
+(385, 'EGY D1', '2022-12-07 15:00:00', 'Ghazl El Mahallah', 'Al Ahly', 2, 1, '-1/1.5', '-1.25'),
+(386, 'OMA PL', '2022-12-07 15:10:00', 'Alrstak', 'al bashaer', 3, 14, '1', '1'),
+(387, 'BHR D1', '2022-12-07 15:30:00', 'Al-Muharraq', 'Al-Budaiya', 1, 12, '1/1.5', '1.25'),
+(388, 'UAE', '2022-12-07 15:30:00', 'Al Ahli Dubai', 'Al Wahda', 2, 1, '0', '0'),
+(389, 'MNE D1', '2022-12-07 15:59:00', 'FK Mornar', 'Decic Tuzi', 9, 3, '-0.5', '-0.5'),
+(390, 'INT CF', '2022-12-07 15:59:00', 'KV Oostende', 'Lille OSC', 14, 7, '-1', '-1'),
+(391, 'SLO D1', '2022-12-07 16:30:00', 'Domzale', 'NK Publikum Celje', 6, 2, '0/-0.5', '0.75'),
+(392, 'INT CF', '2022-12-07 16:30:00', 'Nea Salamis', 'Panathinaikos', 8, 1, '-1/1.5', '-1.25'),
+(393, 'ALG D1', '2022-12-07 17:00:00', 'MC Oran', 'MC An-giê', 12, 5, '0', '0'),
+(394, 'ITA PRO LC', '2022-12-07 17:00:00', 'Virtus Entella', 'Renate AC', 6, 7, '0/0.5', '0.25'),
+(395, 'INT CF', '2022-12-07 17:00:00', 'Inter Milan', 'Red Bull Salzburg', 5, 1, '0.5/1', '0.75'),
+(396, 'INT CF', '2022-12-07 17:00:00', 'Celta Vigo', 'Boavista (FC)', 17, 6, '1', '1'),
+(397, 'INT CF', '2022-12-07 17:00:00', 'Fiorentina', 'Always Ready', 10, 2, '2.5/3', '2.75'),
+(398, 'ISR LATTC', '2022-12-07 17:00:00', 'Sektzia Nes Tziona', 'Hapoel Haifa', 13, 12, '0/-0.5', '0.75'),
+(399, 'BHR D1', '2022-12-07 17:30:00', 'Sitra', 'Al Hala', 8, 10, '0', '0'),
+(400, 'ISR D2', '2022-12-07 17:30:00', 'Hapoel Acco', 'Maccabi Petah Tikva FC', 2, 1, '-0.5', '-0.5'),
+(401, 'ISR D2', '2022-12-07 17:30:00', 'Ironi Tiberias', 'AS Ashdod', 6, 15, '0.5/1', '0.75'),
+(402, 'ISR D2', '2022-12-07 17:30:00', 'Maccabi Ahi Nazareth', 'Hapoel Kfar Saba', 10, 4, '0', '0'),
+(403, 'ISR D2', '2022-12-07 17:30:00', 'Hapoel Ramat Gan FC', 'Hapoel Umm Al Fahm', 11, 5, '0', '0'),
+(404, 'ISR D2', '2022-12-07 17:30:00', 'Hapoel Rishon Lezion', 'Kfar Kasem', 8, 14, '0/0.5', '0.25'),
+(405, 'INT CF', '2022-12-07 17:45:00', 'Antalyaspor', 'Napoli', 11, 1, '-1', '-1'),
+(406, 'ISR LATTC', '2022-12-07 17:45:00', 'Beitar Jerusalem', 'Hapoel Ironi Kiryat Shmona', 11, 14, '0/0.5', '0.25'),
+(407, 'SPA D2', '2022-12-07 18:00:00', 'FC Cartagena', 'Villarreal B', 5, 12, '0.5/1', '0.75'),
+(408, 'SPA D2', '2022-12-07 18:00:00', 'SD Huesca', 'Andorra CF', 11, 8, '0', '0'),
+(409, 'SPDRFEF', '2022-12-07 18:00:00', 'SD Amorebieta', 'Calahorra', 8, 20, '0/0.5', '0.25'),
+(410, 'SPDRFEF', '2022-12-07 18:00:00', 'Racing de Ferrol', 'CD Linares Deportivo', 4, 6, '0.5/1', '0.75'),
+(411, 'ROMC', '2022-12-07 18:00:00', 'Farul Constanta', 'CFR Cluj', 1, 2, '0', '0'),
+(412, 'ROMC', '2022-12-07 18:00:00', 'Universitaea Cluj', 'FC Rapid Bucuresti', 14, 3, '0/-0.5', '0.75'),
+(413, 'ITA PRO LC', '2022-12-07 18:00:00', 'Padova', 'JuventusU23', 11, 8, '0/0.5', '0.25'),
+(414, 'ISR LATTC', '2022-12-07 18:00:00', 'Maccabi Tel Aviv', 'Hapoel Jerusalem', 2, 4, '1/1.5', '1.25'),
+(415, 'ISR LATTC', '2022-12-07 18:15:00', 'Maccabi Netanya', 'Hapoel Hadera', 8, 5, '0.5', '0.5'),
+(416, 'PORLC', '2022-12-07 18:30:00', 'SC Farense', 'Maritimo', 2, 17, '0/0.5', '0.25'),
+(417, 'INT CF', '2022-12-07 19:00:00', 'Cadiz', 'Manchester United', 19, 5, '-0.5', '-0.5'),
+(418, 'INT CF', '2022-12-07 19:00:00', 'Sevilla', 'AS Monaco', 18, 6, '0/0.5', '0.25'),
+(419, 'ITA D2', '2022-12-07 19:30:00', 'Ternana', 'Cagliari', 7, 12, '0', '0'),
+(420, 'ENG CN', '2022-12-07 19:30:00', 'Kidderminster', 'Chester FC', 12, 5, '0.5', '0.5'),
+(421, 'ENG FAC', '2022-12-07 19:45:00', 'Stockport County', 'Charlton Athletic', 12, 17, '0/0.5', '0.25'),
+(422, 'ENG-S PR', '2022-12-07 19:45:00', 'Harrow Borough', 'Hartley Wintney', 18, 21, '0/0.5', '0.25'),
+(423, 'ENG-S PR', '2022-12-07 19:45:00', 'Truro City', 'Beaconsfield SYCOB', 2, 14, '1/1.5', '1.25'),
+(424, 'ENG RYM', '2022-12-07 19:45:00', 'Kingstonian', 'Lewes', 17, 12, '0', '0'),
+(425, 'ENG RYM', '2022-12-07 19:45:00', 'Bognor Regis Town', 'Cray Wanderers', 14, 8, '0/0.5', '0.25'),
+(426, 'SPA D2', '2022-12-07 20:00:00', 'Tenerife', 'Alaves', 16, 3, '0/0.5', '0.25'),
+(427, 'SPDRFEF', '2022-12-07 20:00:00', 'Barcelona B', 'Eldense', 9, 2, '0', '0'),
+(428, 'SPDRFEF', '2022-12-07 20:00:00', 'CD Castellon', 'Numancia', 1, 14, '0.5', '0.5'),
+(429, 'SPDRFEF', '2022-12-07 20:00:00', 'Algeciras', 'Linense', 16, 14, '0/0.5', '0.25'),
+(430, 'SPDRFEF', '2022-12-07 20:00:00', 'Cordoba C.F.', 'Pontevedra', 1, 18, '1/1.5', '1.25'),
+(431, 'SPDRFEF', '2022-12-07 20:00:00', 'Talavera de la Reina', 'Celta Vigo B', 19, 13, '0/-0.5', '0.75'),
+(432, 'SPDRFEF', '2022-12-07 20:00:00', 'Cultural Leonesa', 'C.D. San Fernando Isleno', 9, 15, '0.5', '0.5'),
+(433, 'UEFA WUC', '2022-12-07 20:00:00', 'Nữ Arsenal', 'Nữ Juventus', 3, 2, '1/1.5', '1.25'),
+(434, 'UEFA WUC', '2022-12-07 20:00:00', 'Nữ Bayern Munich', 'Nữ FC Barcelona', 2, 1, '-1.5', '-1.5'),
+(435, 'PORLC', '2022-12-07 20:30:00', 'Rio Ave', 'Sporting Clube de Portugal', 10, 4, '-1', '-1'),
+(436, 'COL D1', '2022-12-08 00:00:00', 'Deportivo Pereira', 'Dep.Independiente Medellin', 5, 3, '0', '0'),
+(437, 'GUA D1', '2022-12-08 01:00:00', 'Club Comunicaciones', 'Coban Imperial', 3, 2, '1', '1');
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `club_entity`
+-- Indexes for table `club_entity`
 --
 ALTER TABLE `club_entity`
   ADD PRIMARY KEY (`entity_id`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Chỉ mục cho bảng `eav_entity_type`
+-- Indexes for table `eav_entity_type`
 --
 ALTER TABLE `eav_entity_type`
   ADD PRIMARY KEY (`entity_type_id`);
 
 --
--- Chỉ mục cho bảng `league_club`
+-- Indexes for table `league_club`
 --
 ALTER TABLE `league_club`
   ADD PRIMARY KEY (`league_id`,`club_id`),
   ADD KEY `club_id` (`club_id`);
 
 --
--- Chỉ mục cho bảng `league_entity`
+-- Indexes for table `league_entity`
 --
 ALTER TABLE `league_entity`
   ADD PRIMARY KEY (`entity_id`),
@@ -307,14 +474,14 @@ ALTER TABLE `league_entity`
   ADD KEY `name` (`name`);
 
 --
--- Chỉ mục cho bảng `less_position_but_higher_odd_match`
+-- Indexes for table `less_position_but_higher_odd_match`
 --
 ALTER TABLE `less_position_but_higher_odd_match`
   ADD PRIMARY KEY (`entity_id`),
   ADD UNIQUE KEY `datetime` (`datetime`,`home_name`,`away_name`);
 
 --
--- Chỉ mục cho bảng `match_entity`
+-- Indexes for table `match_entity`
 --
 ALTER TABLE `match_entity`
   ADD PRIMARY KEY (`entity_id`),
@@ -324,65 +491,65 @@ ALTER TABLE `match_entity`
   ADD KEY `league_id` (`league_id`);
 
 --
--- Chỉ mục cho bảng `new_match_today`
+-- Indexes for table `new_match_today`
 --
 ALTER TABLE `new_match_today`
   ADD PRIMARY KEY (`entity_id`),
   ADD UNIQUE KEY `datetime` (`datetime`,`home_name`,`away_name`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `club_entity`
+-- AUTO_INCREMENT for table `club_entity`
 --
 ALTER TABLE `club_entity`
-  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `entity_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `eav_entity_type`
+-- AUTO_INCREMENT for table `eav_entity_type`
 --
 ALTER TABLE `eav_entity_type`
-  MODIFY `entity_type_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `entity_type_id` smallint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `league_entity`
+-- AUTO_INCREMENT for table `league_entity`
 --
 ALTER TABLE `league_entity`
-  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `entity_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
--- AUTO_INCREMENT cho bảng `less_position_but_higher_odd_match`
+-- AUTO_INCREMENT for table `less_position_but_higher_odd_match`
 --
 ALTER TABLE `less_position_but_higher_odd_match`
-  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `entity_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
--- AUTO_INCREMENT cho bảng `match_entity`
+-- AUTO_INCREMENT for table `match_entity`
 --
 ALTER TABLE `match_entity`
-  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `entity_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
--- AUTO_INCREMENT cho bảng `new_match_today`
+-- AUTO_INCREMENT for table `new_match_today`
 --
 ALTER TABLE `new_match_today`
-  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=348;
+  MODIFY `entity_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=438;
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `league_club`
+-- Constraints for table `league_club`
 --
 ALTER TABLE `league_club`
   ADD CONSTRAINT `league_club_ibfk_1` FOREIGN KEY (`league_id`) REFERENCES `league_entity` (`entity_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `league_club_ibfk_2` FOREIGN KEY (`club_id`) REFERENCES `club_entity` (`entity_id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `match_entity`
+-- Constraints for table `match_entity`
 --
 ALTER TABLE `match_entity`
   ADD CONSTRAINT `match_entity_ibfk_1` FOREIGN KEY (`home_club_id`) REFERENCES `club_entity` (`entity_id`) ON DELETE CASCADE,
