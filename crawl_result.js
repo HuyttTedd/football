@@ -23,8 +23,9 @@ const pool  = mysql.createPool({
     connectionLimit : 1000,
     host            : 'localhost',
     user            : 'root',
-    password        : '',
-    database        : 'football'
+    password        : 'admin123',
+    database        : 'football',
+    port            : '3309'
 });
 
 // Listen on enviroment port or 5000
@@ -178,7 +179,8 @@ async function makeResult(url, fileIndex) {
                     && awayPosition
                     && !isNaN(resultHome) 
                     && !isNaN(resultAway)
-                    && odd) 
+                    && odd
+                    && odd != 0) 
                 {
                     dataRow = {};
                     homeName = allTdData[5].childNodes[4].innerText;
@@ -228,7 +230,7 @@ async function makeResult(url, fileIndex) {
     });
     await page.waitForTimeout(5000);
 
-    fs.writeFileSync('result_text/' + 'data'+fileIndex+'.txt', JSON.stringify(pageData));
+    // fs.writeFileSync('result_text/' + 'data'+fileIndex+'.txt', JSON.stringify(pageData));
     await browser.close();
 
     return pageData;
@@ -342,8 +344,8 @@ async function insertMatch(data, leagueId) {
                 }
             }
             data['odd'] = realOdd;
-            let sqlInsert = "INSERT INTO match_entity(league_id, datetime, home_name, away_name, home_position, away_position, home_corner, away_corner, total_corner, odd)" + 
-                                " VALUES ('"+ leagueId +"','"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','"+ data['homePosition'] +"','"+ data['awayPosition'] +"','"+ data['homeCorner'] +"','"+ data['awayCorner'] +"','"+ data['totalCorner'] +"','"+ data['odd'] +"')";
+            let sqlInsert = "INSERT INTO match_entity(league_id, datetime, home_name, away_name, home_position, away_position, home_result, away_result, home_corner, away_corner, total_corner, odd)" + 
+                                " VALUES ('"+ leagueId +"','"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','"+ data['homePosition'] +"','"+ data['awayPosition'] +"','"+ data['resultHome'] +"','"+ data['resultAway'] +"','"+ data['homeCorner'] +"','"+ data['awayCorner'] +"','"+ data['totalCorner'] +"','"+ data['odd'] +"')";
             connection.query(sqlInsert, (e, result, fields) => {
                 connection.release();
                 if (e) {
