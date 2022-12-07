@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.5deb2
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Dec 07, 2022 at 06:05 PM
--- Server version: 8.0.31-0ubuntu0.20.04.1
--- PHP Version: 7.4.30
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th12 07, 2022 lúc 05:42 PM
+-- Phiên bản máy phục vụ: 10.4.19-MariaDB
+-- Phiên bản PHP: 7.3.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,22 +18,22 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `football`
+-- Cơ sở dữ liệu: `football`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `club_entity`
+-- Cấu trúc bảng cho bảng `club_entity`
 --
 
 CREATE TABLE `club_entity` (
-  `entity_id` int NOT NULL,
+  `entity_id` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `club_entity`
+-- Đang đổ dữ liệu cho bảng `club_entity`
 --
 
 INSERT INTO `club_entity` (`entity_id`, `name`) VALUES
@@ -43,17 +42,17 @@ INSERT INTO `club_entity` (`entity_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `eav_entity_type`
+-- Cấu trúc bảng cho bảng `eav_entity_type`
 --
 
 CREATE TABLE `eav_entity_type` (
-  `entity_type_id` smallint NOT NULL,
+  `entity_type_id` smallint(6) NOT NULL,
   `entity_type_code` varchar(50) DEFAULT NULL,
   `entity_table` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `eav_entity_type`
+-- Đang đổ dữ liệu cho bảng `eav_entity_type`
 --
 
 INSERT INTO `eav_entity_type` (`entity_type_id`, `entity_type_code`, `entity_table`) VALUES
@@ -63,27 +62,27 @@ INSERT INTO `eav_entity_type` (`entity_type_id`, `entity_type_code`, `entity_tab
 -- --------------------------------------------------------
 
 --
--- Table structure for table `league_club`
+-- Cấu trúc bảng cho bảng `league_club`
 --
 
 CREATE TABLE `league_club` (
-  `league_id` int NOT NULL,
-  `club_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `league_id` int(11) NOT NULL,
+  `club_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `league_entity`
+-- Cấu trúc bảng cho bảng `league_entity`
 --
 
 CREATE TABLE `league_entity` (
-  `entity_id` int NOT NULL,
+  `entity_id` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `league_entity`
+-- Đang đổ dữ liệu cho bảng `league_entity`
 --
 
 INSERT INTO `league_entity` (`entity_id`, `name`) VALUES
@@ -103,13 +102,17 @@ INSERT INTO `league_entity` (`entity_id`, `name`) VALUES
 (27, 'ENG-S CE'),
 (25, 'ENG-S PR'),
 (13, 'FRA D3'),
+(36, 'FRA U19'),
 (16, 'GRE D2'),
 (19, 'IDN ISL'),
 (22, 'IND D1'),
 (9, 'INT CF'),
 (5, 'ITA C1'),
+(35, 'ITA PRO LC'),
 (1, 'JAM D1'),
+(38, 'MNE D1'),
 (28, 'NIR LC'),
+(37, 'OMA PL'),
 (21, 'Por U23'),
 (2, 'PORLC'),
 (10, 'ROM D1'),
@@ -118,28 +121,30 @@ INSERT INTO `league_entity` (`entity_id`, `name`) VALUES
 (3, 'SPA D2'),
 (29, 'SPDRFEF'),
 (11, 'TFF 1. Lig'),
+(39, 'TIP CUP'),
 (33, 'TTLd'),
+(40, 'TUR D3'),
 (18, 'UAE'),
 (8, 'World Cup');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `less_position_but_higher_odd_match`
+-- Cấu trúc bảng cho bảng `less_position_but_higher_odd_match`
 --
 
 CREATE TABLE `less_position_but_higher_odd_match` (
-  `entity_id` int NOT NULL,
+  `entity_id` int(11) NOT NULL,
   `datetime` varchar(200) NOT NULL,
   `home_name` varchar(200) NOT NULL,
   `away_name` varchar(200) NOT NULL,
-  `result` int NOT NULL COMMENT '3 is draw, 2 is not set, 1 is win, 0 is lose, 4 is not found',
-  `position_range` int NOT NULL,
+  `result` int(11) NOT NULL COMMENT '3 is draw, 2 is not set, 1 is win, 0 is lose, 4 is not found',
+  `position_range` int(11) NOT NULL,
   `odd` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `less_position_but_higher_odd_match`
+-- Đang đổ dữ liệu cho bảng `less_position_but_higher_odd_match`
 --
 
 INSERT INTO `less_position_but_higher_odd_match` (`entity_id`, `datetime`, `home_name`, `away_name`, `result`, `position_range`, `odd`) VALUES
@@ -154,14 +159,14 @@ INSERT INTO `less_position_but_higher_odd_match` (`entity_id`, `datetime`, `home
 (83, '2022-12-06 19:45:00', 'Spennymoor Town', 'Boston United', 1, 4, '0.25'),
 (84, '2022-12-06 19:45:00', 'Glentoran FC', 'Linfield FC', 0, 2, '0.25'),
 (85, '2022-12-06 19:45:00', 'Coalville Town', 'Nuneaton Town', 0, 3, '0.5'),
-(86, '2022-12-07 11:00:00', 'Duzcespor', 'Corum Belediyespor', 2, 2, '0.75'),
+(86, '2022-12-07 11:00:00', 'Duzcespor', 'Corum Belediyespor', 1, 2, '0.75'),
 (87, '2022-12-07 12:00:00', 'Hertha BSC Berlin', 'Eintr. Braunschweig', 2, 1, '1.25'),
-(88, '2022-12-07 12:35:00', 'Ittihad Kalba', 'Al-Thaid', 2, 1, '1.5'),
-(89, '2022-12-07 12:40:00', 'CLB Oman', 'Sohar Club', 2, 4, '0.75'),
-(90, '2022-12-07 13:00:00', 'Bochum', 'FC Zwolle', 2, 15, '1.5'),
-(91, '2022-12-07 13:30:00', 'Viterbese', 'Vicenza', 2, 18, '0.75'),
-(92, '2022-12-07 13:30:00', 'Foggia', 'Catanzaro', 2, 8, '0.25'),
-(93, '2022-12-07 13:30:00', 'Paris Saint Germain(U19)', 'U19 Valenciennes US', 2, 2, '1.5'),
+(88, '2022-12-07 12:35:00', 'Ittihad Kalba', 'Al-Thaid', 1, 1, '1.5'),
+(89, '2022-12-07 12:40:00', 'CLB Oman', 'Sohar Club', 1, 4, '0.75'),
+(90, '2022-12-07 13:00:00', 'Bochum', 'FC Zwolle', 0, 15, '1.5'),
+(91, '2022-12-07 13:30:00', 'Viterbese', 'Vicenza', 0, 18, '0.75'),
+(92, '2022-12-07 13:30:00', 'Foggia', 'Catanzaro', 1, 8, '0.25'),
+(93, '2022-12-07 13:30:00', 'Paris Saint Germain(U19)', 'U19 Valenciennes US', 0, 2, '1.5'),
 (94, '2022-12-07 15:00:00', 'JS Kabylie', 'RC Arba', 2, 6, '0.75'),
 (95, '2022-12-07 16:30:00', 'Domzale', 'NK Publikum Celje', 2, 4, '0.75'),
 (96, '2022-12-07 17:00:00', 'Inter Milan', 'Red Bull Salzburg', 2, 4, '0.75'),
@@ -178,34 +183,42 @@ INSERT INTO `less_position_but_higher_odd_match` (`entity_id`, `datetime`, `home
 (107, '2022-12-07 20:00:00', 'Algeciras', 'Linense', 2, 2, '0.25'),
 (108, '2022-12-07 20:00:00', 'Talavera de la Reina', 'Celta Vigo B', 2, 6, '0.75'),
 (109, '2022-12-07 20:00:00', 'Nữ Arsenal', 'Nữ Juventus', 2, 1, '1.25'),
-(110, '2022-12-08 01:00:00', 'Club Comunicaciones', 'Coban Imperial', 2, 1, '1');
+(110, '2022-12-08 01:00:00', 'Club Comunicaciones', 'Coban Imperial', 2, 1, '1'),
+(111, '2022-12-07 15:59:00', 'FK Mornar', 'Decic Tuzi', 2, 6, '0.75'),
+(112, '2022-12-07 15:59:00', 'Crystal Palace', 'Trabzonspor', 2, 4, '0.75'),
+(117, '2022-12-07 17:30:00', 'Maccabi Ahi Nazareth', 'Hapoel Kfar Saba', 2, 6, '0.25'),
+(118, '2022-12-07 17:30:00', 'Hapoel Ramat Gan FC', 'Hapoel Umm Al Fahm', 2, 6, '0.75'),
+(121, '2022-12-07 18:00:00', 'TuS Blau-Weiss Lohne', 'VfL Osnabruck', 2, 2, '-1.25'),
+(123, '2022-12-07 19:00:00', 'Cadiz', 'Manchester United', 2, 14, '0.75'),
+(130, '2022-12-08 00:00:00', 'Deportivo Pereira', 'Dep.Independiente Medellin', 2, 2, '0.25'),
+(132, '2022-12-08 08:30:00', 'Aizawl FC', 'Neroca FC', 2, 1, '0.75');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `match_entity`
+-- Cấu trúc bảng cho bảng `match_entity`
 --
 
 CREATE TABLE `match_entity` (
-  `entity_id` int NOT NULL,
-  `league_id` int NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `league_id` int(11) NOT NULL,
   `datetime` varchar(200) NOT NULL,
-  `home_club_id` int DEFAULT NULL,
-  `away_club_id` int DEFAULT NULL,
+  `home_club_id` int(11) DEFAULT NULL,
+  `away_club_id` int(11) DEFAULT NULL,
   `home_name` varchar(200) NOT NULL,
   `away_name` varchar(200) NOT NULL,
-  `home_result` int DEFAULT NULL,
-  `away_result` int DEFAULT NULL,
-  `home_position` int NOT NULL,
-  `away_position` int NOT NULL,
-  `home_corner` int DEFAULT NULL,
-  `away_corner` int DEFAULT NULL,
-  `total_corner` int DEFAULT NULL,
+  `home_result` int(11) DEFAULT NULL,
+  `away_result` int(11) DEFAULT NULL,
+  `home_position` int(11) NOT NULL,
+  `away_position` int(11) NOT NULL,
+  `home_corner` int(11) DEFAULT NULL,
+  `away_corner` int(11) DEFAULT NULL,
+  `total_corner` int(11) DEFAULT NULL,
   `odd` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `match_entity`
+-- Đang đổ dữ liệu cho bảng `match_entity`
 --
 
 INSERT INTO `match_entity` (`entity_id`, `league_id`, `datetime`, `home_club_id`, `away_club_id`, `home_name`, `away_name`, `home_result`, `away_result`, `home_position`, `away_position`, `home_corner`, `away_corner`, `total_corner`, `odd`) VALUES
@@ -282,28 +295,51 @@ INSERT INTO `match_entity` (`entity_id`, `league_id`, `datetime`, `home_club_id`
 (71, 21, '2022-12-06 11:00:00', NULL, NULL, 'Farense U23', 'Estoril U23', 4, 1, 4, 2, 2, 5, 7, '0.75'),
 (72, 29, '2022-12-06 11:00:00', NULL, NULL, 'Fuenlabrada', 'Merida AD', 0, 1, 10, 9, 4, 5, 9, '0.25'),
 (73, 29, '2022-12-06 11:00:00', NULL, NULL, 'Unionistas de Salamanca', 'Alcorcon', 2, 1, 15, 2, 3, 8, 11, '0'),
-(74, 9, '2022-12-06 11:00:00', NULL, NULL, 'Athletic Bilbao', 'Real Valladolid', 2, 0, 4, 12, 4, 6, 10, '0.25');
+(74, 9, '2022-12-06 11:00:00', NULL, NULL, 'Athletic Bilbao', 'Real Valladolid', 2, 0, 4, 12, 4, 6, 10, '0.25'),
+(75, 22, '2022-12-07 13:30:00', NULL, NULL, 'Gokulam', 'Sudeva Delhi', 3, 0, 5, 12, 6, 3, 9, '1'),
+(76, 35, '2022-12-07 13:30:00', NULL, NULL, 'Viterbese', 'Vicenza', 0, 2, 19, 1, 4, 6, 10, '0.75'),
+(77, 35, '2022-12-07 13:30:00', NULL, NULL, 'Foggia', 'Catanzaro', 2, 0, 9, 1, 5, 6, 11, '0.25'),
+(78, 36, '2022-12-07 13:30:00', NULL, NULL, 'Paris Saint Germain(U19)', 'U19 Valenciennes US', 2, 1, 6, 4, 8, 1, 9, '1.5'),
+(79, 9, '2022-12-07 13:30:00', NULL, NULL, 'Grasshoppers', 'FC Luzern', 0, 0, 7, 6, 5, 4, 9, '0.25'),
+(80, 37, '2022-12-07 13:05:00', NULL, NULL, 'Dhofar', 'Al Oruba Sur', 3, 2, 6, 13, 3, 1, 4, '1.25'),
+(81, 16, '2022-12-07 13:00:00', NULL, NULL, 'Apollon Smirnis', 'Olympiakos Piraeus B', 1, 0, 4, 13, 5, 3, 8, '0.25'),
+(82, 16, '2022-12-07 13:00:00', NULL, NULL, 'Rouf FC', 'AE Kifisias', 1, 3, 15, 1, 3, 4, 7, '-1.5'),
+(83, 9, '2022-12-07 13:00:00', NULL, NULL, 'Bochum', 'FC Zwolle', 1, 3, 17, 2, 5, 2, 7, '1.5'),
+(84, 32, '2022-12-07 12:45:00', NULL, NULL, 'Pyramids FC', 'Arab Contractors', 2, 0, 6, 7, 9, 3, 12, '0.75'),
+(85, 32, '2022-12-07 12:45:00', NULL, NULL, 'Pharco', 'El Dakhleya', 1, 1, 8, 18, 5, 5, 10, '0.25'),
+(86, 18, '2022-12-07 12:45:00', NULL, NULL, 'Al Wasl FC', 'Masafi', 3, 0, 3, 8, 14, 3, 17, '2.5'),
+(87, 37, '2022-12-07 12:40:00', NULL, NULL, 'CLB Oman', 'Sohar Club', 1, 0, 8, 4, 4, 8, 12, '0.75'),
+(88, 18, '2022-12-07 12:35:00', NULL, NULL, 'Ittihad Kalba', 'Al-Thaid', 6, 2, 8, 7, 7, 6, 13, '1.75'),
+(89, 33, '2022-12-07 12:30:00', NULL, NULL, 'A.S Djerba', 'Sporting Ben Arous', 0, 1, 6, 11, 7, 2, 9, '0.25'),
+(90, 33, '2022-12-07 12:30:00', NULL, NULL, 'E. M. Mahdia', 'S.S. Sfaxien', 2, 1, 9, 12, 1, 3, 4, '1.25'),
+(91, 9, '2022-12-07 12:05:00', NULL, NULL, 'Hertha BSC Berlin', 'Eintr. Braunschweig', 1, 0, 15, 14, 4, 9, 13, '1.5'),
+(92, 38, '2022-12-07 12:00:00', NULL, NULL, 'Jedinstvo Bijelo Polje', 'FK Sutjeska Niksic', 0, 4, 6, 2, 4, 4, 8, '-0.75'),
+(93, 39, '2022-12-07 12:00:00', NULL, NULL, 'Viktoria Zizkov', 'Slovan Liberec', 2, 3, 19, 9, 5, 9, 14, '-1.5'),
+(94, 19, '2022-12-07 11:15:00', NULL, NULL, 'Persik Kediri', 'Persib Bandung', 0, 3, 18, 9, 3, 1, 4, '-1'),
+(95, 40, '2022-12-07 11:00:00', NULL, NULL, 'Duzcespor', 'Corum Belediyespor', 3, 1, 6, 4, 7, 6, 13, '0.75'),
+(96, 22, '2022-12-07 11:00:00', NULL, NULL, 'Rajasthan Club', 'Kenkre', 1, 1, 4, 10, 12, 1, 13, '1'),
+(97, 9, '2022-12-07 10:00:00', NULL, NULL, 'Arka Gdynia', 'Olimpia Elblag', 3, 1, 6, 6, 8, 4, 12, '1.25');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `new_match_today`
+-- Cấu trúc bảng cho bảng `new_match_today`
 --
 
 CREATE TABLE `new_match_today` (
-  `entity_id` int NOT NULL,
+  `entity_id` int(11) NOT NULL,
   `league_name` varchar(200) DEFAULT NULL,
   `datetime` varchar(200) NOT NULL,
   `home_name` varchar(200) NOT NULL,
   `away_name` varchar(200) NOT NULL,
-  `home_position` smallint NOT NULL,
-  `away_position` smallint NOT NULL,
+  `home_position` smallint(6) NOT NULL,
+  `away_position` smallint(6) NOT NULL,
   `odd` varchar(50) NOT NULL,
   `odd_converted` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `new_match_today`
+-- Đang đổ dữ liệu cho bảng `new_match_today`
 --
 
 INSERT INTO `new_match_today` (`entity_id`, `league_name`, `datetime`, `home_name`, `away_name`, `home_position`, `away_position`, `odd`, `odd_converted`) VALUES
@@ -439,34 +475,40 @@ INSERT INTO `new_match_today` (`entity_id`, `league_name`, `datetime`, `home_nam
 (434, 'UEFA WUC', '2022-12-07 20:00:00', 'Nữ Bayern Munich', 'Nữ FC Barcelona', 2, 1, '-1.5', '-1.5'),
 (435, 'PORLC', '2022-12-07 20:30:00', 'Rio Ave', 'Sporting Clube de Portugal', 10, 4, '-1', '-1'),
 (436, 'COL D1', '2022-12-08 00:00:00', 'Deportivo Pereira', 'Dep.Independiente Medellin', 5, 3, '0', '0'),
-(437, 'GUA D1', '2022-12-08 01:00:00', 'Club Comunicaciones', 'Coban Imperial', 3, 2, '1', '1');
+(437, 'GUA D1', '2022-12-08 01:00:00', 'Club Comunicaciones', 'Coban Imperial', 3, 2, '1', '1'),
+(439, 'INT CF', '2022-12-07 15:59:00', 'Crystal Palace', 'Trabzonspor', 11, 7, '0.5/1', '0.75'),
+(441, 'INT CF', '2022-12-07 15:59:00', 'Alanyaspor', 'Fenerbahce', 9, 1, '-0.5', '-0.5'),
+(465, 'INT CF', '2022-12-07 18:00:00', 'TuS Blau-Weiss Lohne', 'VfL Osnabruck', 8, 10, '-1/1.5', '-1.25'),
+(490, 'IDN ISL', '2022-12-08 08:15:00', 'PSM Makassar', 'Persita Tangerang', 1, 6, '0.5/1', '0.75'),
+(491, 'IDN ISL', '2022-12-08 08:15:00', 'PSS Sleman', 'Madura United', 14, 5, '-0.5', '-0.5'),
+(492, 'IND D1', '2022-12-08 08:30:00', 'Aizawl FC', 'Neroca FC', 8, 7, '0.5/1', '0.75');
 
 --
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `club_entity`
+-- Chỉ mục cho bảng `club_entity`
 --
 ALTER TABLE `club_entity`
   ADD PRIMARY KEY (`entity_id`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Indexes for table `eav_entity_type`
+-- Chỉ mục cho bảng `eav_entity_type`
 --
 ALTER TABLE `eav_entity_type`
   ADD PRIMARY KEY (`entity_type_id`);
 
 --
--- Indexes for table `league_club`
+-- Chỉ mục cho bảng `league_club`
 --
 ALTER TABLE `league_club`
   ADD PRIMARY KEY (`league_id`,`club_id`),
   ADD KEY `club_id` (`club_id`);
 
 --
--- Indexes for table `league_entity`
+-- Chỉ mục cho bảng `league_entity`
 --
 ALTER TABLE `league_entity`
   ADD PRIMARY KEY (`entity_id`),
@@ -474,14 +516,14 @@ ALTER TABLE `league_entity`
   ADD KEY `name` (`name`);
 
 --
--- Indexes for table `less_position_but_higher_odd_match`
+-- Chỉ mục cho bảng `less_position_but_higher_odd_match`
 --
 ALTER TABLE `less_position_but_higher_odd_match`
   ADD PRIMARY KEY (`entity_id`),
   ADD UNIQUE KEY `datetime` (`datetime`,`home_name`,`away_name`);
 
 --
--- Indexes for table `match_entity`
+-- Chỉ mục cho bảng `match_entity`
 --
 ALTER TABLE `match_entity`
   ADD PRIMARY KEY (`entity_id`),
@@ -491,65 +533,65 @@ ALTER TABLE `match_entity`
   ADD KEY `league_id` (`league_id`);
 
 --
--- Indexes for table `new_match_today`
+-- Chỉ mục cho bảng `new_match_today`
 --
 ALTER TABLE `new_match_today`
   ADD PRIMARY KEY (`entity_id`),
   ADD UNIQUE KEY `datetime` (`datetime`,`home_name`,`away_name`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- AUTO_INCREMENT for table `club_entity`
+-- AUTO_INCREMENT cho bảng `club_entity`
 --
 ALTER TABLE `club_entity`
-  MODIFY `entity_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `eav_entity_type`
+-- AUTO_INCREMENT cho bảng `eav_entity_type`
 --
 ALTER TABLE `eav_entity_type`
-  MODIFY `entity_type_id` smallint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `entity_type_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `league_entity`
+-- AUTO_INCREMENT cho bảng `league_entity`
 --
 ALTER TABLE `league_entity`
-  MODIFY `entity_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
--- AUTO_INCREMENT for table `less_position_but_higher_odd_match`
+-- AUTO_INCREMENT cho bảng `less_position_but_higher_odd_match`
 --
 ALTER TABLE `less_position_but_higher_odd_match`
-  MODIFY `entity_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
--- AUTO_INCREMENT for table `match_entity`
+-- AUTO_INCREMENT cho bảng `match_entity`
 --
 ALTER TABLE `match_entity`
-  MODIFY `entity_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
 
 --
--- AUTO_INCREMENT for table `new_match_today`
+-- AUTO_INCREMENT cho bảng `new_match_today`
 --
 ALTER TABLE `new_match_today`
-  MODIFY `entity_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=438;
+  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=493;
 
 --
--- Constraints for dumped tables
+-- Các ràng buộc cho các bảng đã đổ
 --
 
 --
--- Constraints for table `league_club`
+-- Các ràng buộc cho bảng `league_club`
 --
 ALTER TABLE `league_club`
   ADD CONSTRAINT `league_club_ibfk_1` FOREIGN KEY (`league_id`) REFERENCES `league_entity` (`entity_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `league_club_ibfk_2` FOREIGN KEY (`club_id`) REFERENCES `club_entity` (`entity_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `match_entity`
+-- Các ràng buộc cho bảng `match_entity`
 --
 ALTER TABLE `match_entity`
   ADD CONSTRAINT `match_entity_ibfk_1` FOREIGN KEY (`home_club_id`) REFERENCES `club_entity` (`entity_id`) ON DELETE CASCADE,

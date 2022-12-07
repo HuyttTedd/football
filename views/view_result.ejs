@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <style>
+        #result {
+            margin: 150px auto;
+        }
+        #result tr td {
+            padding: 10px;
+        }
+
+        .result-match {
+            font-weight: 700;
+            color: aliceblue;
+        }
+
+        .datetime {
+            background-color: bisque;
+        }
+    </style>
+</head>
+<body>
+    <table id="result" border="2" style="border-collapse:collapse;">
+        <% for (let row of rows) { %>
+            <tr>
+                <td class="datetime"><%= row['datetime'] %></td>
+                <td><%= row['home_name'] %></td>
+                <td><%= row['away_name'] %></td>
+                <% if (row['result'] == 1) { %>
+                    <td class="result-match" style="background: green">WIN</td>
+                <% } else if (row['result'] == 0) { %>
+                    <td class="result-match" style="background: red">LOSE</td>
+                <% } %>
+                <td><%= row['position_range'] %></td>
+                <td><%= row['odd'] %></td>
+            </tr>
+         <% } %>
+    </table>
+</body>
+</html>
