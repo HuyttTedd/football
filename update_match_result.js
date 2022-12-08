@@ -5,9 +5,9 @@ const pool  = mysql.createPool({
     connectionLimit : 1000,
     host            : 'localhost',
     user            : 'root',
-    password        : '',
-    database        : 'football'
-    // port            : '3309'
+    password        : 'admin123',
+    database        : 'football',
+    port            : '3309'
 });
 
 
@@ -59,24 +59,27 @@ pool.getConnection(async (err, connection) => {
 async function getMatchComplete(datetime, homeName, awayName) {
     return new Promise( (resolve) => {
         pool.getConnection(async (err, connection) => {
-            let id = 0;
-            let getCompleteMatchQuery = "SELECT * FROM match_entity WHERE datetime='"
-            + datetime + "' AND home_name='" + homeName + "' AND away_name='" + awayName + "'";
-            if(err) throw err
-            connection.query(getCompleteMatchQuery, (err, rows) => {
-                connection.release();
-                if (!err) {
-                    if (rows.length == 1) {
-                        resolve(rows);
+            let datetimeSplit = datetime.split(" ");
+            if (datetimeSplit.length == 2) {
+                datetime = datetimeSplit[0];
+                let getCompleteMatchQuery = "SELECT * FROM match_entity WHERE datetime LIKE '%"
+                + datetime + "%' AND home_name='" + homeName + "' AND away_name='" + awayName + "'";
+                if(err) throw err
+                connection.query(getCompleteMatchQuery, (err, rows) => {
+                    connection.release();
+                    if (!err) {
+                        if (rows.length == 1) {
+                            resolve(rows);
+                        } else {
+                            console.log('More than 1 match are queried or match is not complete:' + homeName);
+                        }
+                    resolve(rows);
                     } else {
-                        console.log('More than 1 match are queried or match is not complete:' + homeName);
+                        console.log(err);
+                        resolve(0);
                     }
-                resolve(rows);
-                } else {
-                    console.log(err);
-                    resolve(0);
-                }
-            })
+                });
+            }
         });
     }).then((response) => {
         return response;
@@ -145,6 +148,14 @@ async function insertMatch(data, leagueId) {
                 }
             }
             data['odd'] = realOdd;
+                //check Name have '
+                if (data['homeName'].includes("'")) {
+                    data['homeName'] = data['homeName'].replace("'", "");
+                }
+                if (data['awayName'].includes("'")) {
+                    data['awayName'] = data['awayName'].replace("'", "");
+                }
+
             let sqlInsert = "INSERT INTO match_entity(league_id, datetime, home_name, away_name, home_position, away_position, home_corner, away_corner, total_corner, odd)" + 
                                 " VALUES ('"+ leagueId +"','"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','"+ data['homePosition'] +"','"+ data['awayPosition'] +"','"+ data['homeCorner'] +"','"+ data['awayCorner'] +"','"+ data['totalCorner'] +"','"+ data['odd'] +"')";
             connection.query(sqlInsert, (e, result, fields) => {

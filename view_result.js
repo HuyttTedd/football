@@ -15,9 +15,9 @@ const pool  = mysql.createPool({
     connectionLimit : 1000,
     host            : 'localhost',
     user            : 'root',
-    password        : '',
-    database        : 'football'
-    // port            : '3309'
+    password        : 'admin123',
+    database        : 'football',
+    port            : '3309'
 });
 
 // Listen on enviroment port or 5000
@@ -30,7 +30,7 @@ app.get('/result', async (req, res) => {
         dataByOdd[odd] = await getResultMatchCompleteByOdd(odd);
     }
 
-    res.render("view_result.ejs", { rows, dataByOdd });
+    res.render("view_result.ejs", { rows, dataByOdd, arrayOdd });
 })
 
 

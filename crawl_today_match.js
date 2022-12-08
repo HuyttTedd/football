@@ -17,9 +17,9 @@ const pool  = mysql.createPool({
     connectionLimit : 1000,
     host            : 'localhost',
     user            : 'root',
-    password        : '',
-    database        : 'football'
-    // port            : '3309'
+    password        : 'admin123',
+    database        : 'football',
+    port            : '3309'
 });
 
 // Listen on enviroment port or 5000
@@ -82,7 +82,10 @@ async function makeResult(url, fileIndex) {
             && element.style.display != 'none'
             && allTdData.length > 10) {
                 //check league name
-                leagueName = allTdData[1].innerText;
+                leagueName = allTdData[1]?.attributes?.title?.textContent;
+                if (!leagueName) {
+                    leagueName = allTdData[1].innerText;
+                }
                 //check date time
                 datetime = allTdData[2]?.dataset?.t;
                 // check complete state
@@ -225,27 +228,29 @@ async function insertMatch(data) {
             let positionRange;
             
             if (Number(data['homePosition']) > Number(data['awayPosition']) && realOdd > 0) {
-                console.log(data['homePosition']);
-                console.log(data['awayPosition']);
-                console.log(data['homeName']);
-                console.log('++++++++++++++++');
                 isLessButHigh = true;
                 positionRange = data['homePosition'] - data['awayPosition'];
             }
 
             if (Number(data['homePosition']) < Number(data['awayPosition']) && realOdd < 0) {
-                console.log(data['homePosition']);
-                console.log(data['awayPosition']);
-                console.log(data['homeName']);
-                console.log('----------------------');
                 isLessButHigh = true;
                 positionRange = data['awayPosition'] - data['homePosition'];
             }
             
+            //check Name have '
+            if (data['homeName'].includes("'")) {
+                data['homeName'] = data['homeName'].replace("'", "");
+            }
+            if (data['awayName'].includes("'")) {
+                data['awayName'] = data['awayName'].replace("'", "");
+            }
+            if (data['leagueName'].includes("'")) {
+                data['leagueName']= data['leagueName'].replace("'", "");
+            }
             // result: 	2 is not set, 1 is win, 0 is lose
             if (isLessButHigh) {
-                let sqlInsertLessPosition = "INSERT INTO less_position_but_higher_odd_match(datetime, home_name, away_name, result, position_range, odd)" + 
-            " VALUES ('"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','2','"+ positionRange +"','"+ realOdd +"')";
+                let sqlInsertLessPosition = "INSERT INTO less_position_but_higher_odd_match(league_name, datetime, home_name, away_name, result, position_range, odd)" + 
+            " VALUES ('"+ data['leagueName'] +"','"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','2','"+ positionRange +"','"+ realOdd +"')";
                 connection.query(sqlInsertLessPosition, (e, result, fields) => {
                     if (e) {
                         // console.log(data['datetime'] + " insert fail: " + e + ': home_id' + data['homeName']);

@@ -23,9 +23,9 @@ const pool  = mysql.createPool({
     connectionLimit : 1000,
     host            : 'localhost',
     user            : 'root',
-    password        : '',
-    database        : 'football'
-    // port            : '3309'
+    password        : 'admin123',
+    database        : 'football',
+    port            : '3309'
 });
 
 // Listen on enviroment port or 5000
@@ -99,7 +99,10 @@ async function makeResult(url, fileIndex) {
             && element.style.display != 'none'
             && allTdData.length > 10) {
                 //check league name
-                leagueName = allTdData[1].innerText;
+                leagueName = allTdData[1]?.attributes?.title?.textContent;
+                if (!leagueName) {
+                    leagueName = allTdData[1].innerText;
+                }
                 //check date time
                 datetime = allTdData[2]?.dataset?.t;
                 // check complete state
@@ -248,6 +251,7 @@ async function test() {
 
 app.get('', async (req, res) => {
     let renderData = await test();
+    fs.writeFileSync('renderData.txt', JSON.stringify(renderData));
     let mess = 'error';
     let leagueId;
     let statusInsertLeague = 0;
@@ -282,6 +286,10 @@ async function insertLeague(leagueName) {
     return new Promise( (resolve) => {
         pool.getConnection((err, connection) => {
             if(err) throw err
+            if (leagueName.includes("'")) {
+                leagueName = leagueName.replace("'", "");
+            }
+
             var sqlInsert = "INSERT INTO league_entity(name)" + 
                                 " VALUES ('"+ leagueName +"')";
             connection.query(sqlInsert, (e, result, fields) => {
@@ -344,6 +352,13 @@ async function insertMatch(data, leagueId) {
                 }
             }
             data['odd'] = realOdd;
+            //check Name have '
+            if (data['homeName'].includes("'")) {
+                data['homeName'] = data['homeName'].replace("'", "");
+            }
+            if (data['awayName'].includes("'")) {
+                data['awayName'] = data['awayName'].replace("'", "");
+            }
             let sqlInsert = "INSERT INTO match_entity(league_id, datetime, home_name, away_name, home_position, away_position, home_result, away_result, home_corner, away_corner, total_corner, odd)" + 
                                 " VALUES ('"+ leagueId +"','"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','"+ data['homePosition'] +"','"+ data['awayPosition'] +"','"+ data['resultHome'] +"','"+ data['resultAway'] +"','"+ data['homeCorner'] +"','"+ data['awayCorner'] +"','"+ data['totalCorner'] +"','"+ data['odd'] +"')";
             connection.query(sqlInsert, (e, result, fields) => {
