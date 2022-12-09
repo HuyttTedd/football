@@ -1,12 +1,5 @@
-const express = require('express')
 const mysql = require('mysql')
 const arrayOdd = [0.25, -0.25, 0.5, -0.5, 0.75, -0.75, 1, -1, 1.25, -1.25, 1.5, -1.5, 1.75, -1.75, 2, -2, 2.25, -2.25, 2.5, -2.5, 2.75, -2.75, 3, -3];
-const app = express()
-app.set("view engine", "ejs");
-const port = process.env.PORT || 5002;
-app.use(express.urlencoded({extended: true})); // New
-app.use(express.json()); // New
-
 const MATCH_COUNT = 3;
 
 // MySQL Code goes here
@@ -19,27 +12,164 @@ const pool  = mysql.createPool({
     port            : '3309'
 });
 
-// Listen on enviroment port or 5000
-app.listen(port, () => console.log(`Listening on port ${port}`))
-
-app.get('/prediction', async (req, res) => {
+(async function run() {
     let dataRandomMatchAll = await getMatchNotCompleteAndNotInListAll();
-    let matchsSelectedForAllOdd = [];
+    let matchsSelectedForAllOdd;
     let matchsSelectedForEachOdd = [];
     if (dataRandomMatchAll) {
         matchsSelectedForAllOdd = randomMatch(dataRandomMatchAll, MATCH_COUNT);
+        if (matchsSelectedForAllOdd) {
+            await insertRandomListItem(matchsSelectedForAllOdd, 'all');
+        }
     }
 
-    let dataByOdd = {};
+    let dataByOdd;
     for await (let odd of arrayOdd) {
         matchsSelectedForEachOdd = await getMatchNotCompleteAndNotInOddList(odd);
-        dataByOdd[odd] = randomMatch(matchsSelectedForEachOdd, MATCH_COUNT);
+        dataByOdd = randomMatch(matchsSelectedForEachOdd, MATCH_COUNT);
+        if (dataByOdd) {
+            // await 
+        }
     }
+})();
 
-    console.log(matchsSelectedForAllOdd);
-    console.log(dataByOdd);
-    res.render("random_three_match.ejs", { matchsSelectedForAllOdd, dataByOdd, arrayOdd });
-});
+// app.get('/new_prediction', async (req, res) => {
+//     let dataRandomMatchAll = await getMatchNotCompleteAndNotInListAll();
+//     let matchsSelectedForAllOdd;
+//     let matchsSelectedForEachOdd = [];
+//     if (dataRandomMatchAll) {
+//         matchsSelectedForAllOdd = randomMatch(dataRandomMatchAll, MATCH_COUNT);
+//         console.log(matchsSelectedForAllOdd);
+//         if (matchsSelectedForAllOdd) {
+//             await insertRandomListItem(matchsSelectedForAllOdd, 'all');
+//         }
+//     }
+
+//     let dataByOdd;
+//     for await (let odd of arrayOdd) {
+//         matchsSelectedForEachOdd = await getMatchNotCompleteAndNotInOddList(odd);
+//         dataByOdd = randomMatch(matchsSelectedForEachOdd, MATCH_COUNT);
+//         if (dataByOdd) {
+//             // await 
+//         }
+//     }
+
+//     console.log(matchsSelectedForAllOdd);
+//     // console.log(dataByOdd);
+//     res.render("random_three_match.ejs", { matchsSelectedForAllOdd, dataByOdd, arrayOdd });
+// });
+
+async function insertRandomListItem(data, odd) {
+    return new Promise( (resolve) => {
+        pool.getConnection(async (err, connection) => {
+            let insertResult, maxId;
+
+            if(err) throw err
+            try {
+                connection.beginTransaction();
+                // await insertRandomList(data, odd, connection);
+                insertResult = new Promise((resolve) => {
+                    let sqlInsert = "INSERT INTO random_list(match_count, odd)" + 
+                                        " VALUES ('"+ data.length +"', '"+ odd +"')";
+                    connection.query(sqlInsert, (e, result, fields) => {
+                        if (e) {
+                            console.log("insert fail: List Random Entity with error: " + e);
+                            connection.rollback();
+                            resolve(0)
+                        } else {
+                            resolve(1)
+                        }
+                    })
+                }).then((response) => {
+                    return response;
+                }); 
+
+                // let maxId = await selectMaxEntityFromRandomList(connection);
+                maxId = new Promise((resolve) => {
+                    let sqlGetLastEntityId = "SELECT MAX(entity_id) as max_entity from random_list"
+                    connection.query(sqlGetLastEntityId, (err, rows) => {
+                        if (!err) {
+                            console.log(rows[0]['max_entity']);
+                            console.log('&&&&&&&&&&&');
+                            resolve(rows[0]['max_entity']);
+                        } else {
+                            resolve(0);
+                        }
+                    })
+                }).then((response) => {
+                    return response;
+                }); 
+
+                if (!maxId) {
+                    resolve(0);
+                    connection.rollback();
+                } else {
+                    // for await (let item of data) {
+                    new Promise((resolve) => {
+                        for (let item of data) {
+                            console.log(maxId);
+                            let sqlInsertItem = "INSERT INTO random_list_item(list_id, match_id)" + 
+                                " VALUES ('"+ maxId +"', '"+ item['entity_id'] +"')";
+                            connection.query(sqlInsertItem, (e, result, fields) => {
+                                if (e) {
+                                    connection.rollback();
+                                    console.log("insert fail: Item List Random Entity with error: " + e);
+                                    resolve(0)
+                                } else {
+                                    resolve(1)
+                                }
+                            })   
+                        }
+                    }).then((response) => {
+                        return response;
+                    });
+                    // }
+                }
+
+                connection.commit();
+                connection.release();
+            } catch (err) {
+                connection.rollback();
+                reject(err);
+            }
+        });
+    }).then((response) => {
+        return response;
+    }); 
+}
+
+async function insertRandomList(data, odd, connection) {
+    return new Promise((resolve) => {
+        let sqlInsert = "INSERT INTO random_list(match_count, odd)" + 
+                            " VALUES ('"+ data.length +"', '"+ odd +"')";
+        connection.query(sqlInsert, (e, result, fields) => {
+            if (e) {
+                console.log("insert fail: List Random Entity with error: " + e);
+                resolve(0)
+            } else {
+                resolve(1)
+            }
+        })
+    }).then((response) => {
+        return response;
+    }); 
+}
+
+async function selectMaxEntityFromRandomList(connection) {
+    return new Promise((resolve) => {
+        let sqlGetLastEntityId = "SELECT MAX(entity_id) as max_entity from random_list"
+        connection.query(sqlGetLastEntityId, (err, rows) => {
+            connection.release();
+            if (!err) {
+                resolve(rows[0]['max_entity']);
+            } else {
+                resolve(0);
+            }
+        })
+    }).then((response) => {
+        return response;
+    }); 
+}
 
 
 function randomMatch(matchs, match_count, failedCount = 0) {

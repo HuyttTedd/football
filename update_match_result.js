@@ -49,6 +49,10 @@ pool.getConnection(async (err, connection) => {
                         result = 3;
                     }
                 }
+
+                if (odd == 0) {
+                    result = 10;
+                }
                 await updateResult(result, row['datetime'], row['home_name'], row['away_name']);
             }
             // await updateResult(result, row['datetime'], row['home_name'], row['away_name']);
@@ -68,6 +72,10 @@ async function getMatchComplete(datetime, homeName, awayName) {
                 connection.query(getCompleteMatchQuery, (err, rows) => {
                     connection.release();
                     if (!err) {
+                        console.log(homeName);
+                        console.log(rows);
+                        console.log(getCompleteMatchQuery);
+                        console.log('++++++++++++++++++++++++++++');
                         if (rows.length == 1) {
                             resolve(rows);
                         } else {

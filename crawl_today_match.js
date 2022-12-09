@@ -8,7 +8,7 @@ const mysql = require('mysql')
 
 const app = express()
 app.set("view engine", "ejs");
-const port = process.env.PORT || 6001;
+const port = process.env.PORT || 5003;
 app.use(express.urlencoded({extended: true})); // New
 app.use(express.json()); // New
 
@@ -142,7 +142,7 @@ async function makeResult(url, fileIndex) {
                     && homePosition
                     && (completeState == 'Tips' || completeState == '-') 
                     && awayPosition
-                    && odd) 
+                    && (odd || odd == 0))
                 {
                     dataRow = {};
                     homeName = allTdData[5].childNodes[4].innerText;
@@ -236,7 +236,7 @@ async function insertMatch(data) {
                 isLessButHigh = true;
                 positionRange = data['awayPosition'] - data['homePosition'];
             }
-            
+
             //check Name have '
             if (data['homeName'].includes("'")) {
                 data['homeName'] = data['homeName'].replace("'", "");
@@ -253,10 +253,10 @@ async function insertMatch(data) {
             " VALUES ('"+ data['leagueName'] +"','"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','2','"+ positionRange +"','"+ realOdd +"')";
                 connection.query(sqlInsertLessPosition, (e, result, fields) => {
                     if (e) {
-                        // console.log(data['datetime'] + " insert fail: " + e + ': home_id' + data['homeName']);
+                        console.log(data['datetime'] + " insert fail: " + e + ': home_id' + data['homeName']);
                         resolve(0);
                     } else {
-                        // console.log("1 record inserted " + data['datetime'] + ' : home_id' + data['homeName']);
+                        console.log("1 record inserted " + data['datetime'] + ' : home_id' + data['homeName']);
                         resolve(1);
                     }
                 })
@@ -267,10 +267,10 @@ async function insertMatch(data) {
             connection.query(sqlInsertTodayMatch, (e, result, fields) => {
                 connection.release();
                 if (e) {
-                    // console.log(data['datetime'] + " insert fail: " + e + ': home_id' + data['homeName']);
+                    console.log(data['datetime'] + " insert fail: " + e + ': home_id' + data['homeName']);
                     resolve(0);
                 } else {
-                    // console.log("1 record inserted " + data['datetime'] + ' : home_id' + data['homeName']);
+                    console.log("1 record inserted " + data['datetime'] + ' : home_id' + data['homeName']);
                     resolve(1);
                 }
             })

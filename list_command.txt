@@ -1,0 +1,19 @@
+node crawl_result.js
+node crawl_today_match.js
+node update_match_result.js
+
+
+                    // console.log(leagueName);
+                    // console.log(datetime);
+                    // console.log(completeState);
+                    // console.log(homeName);
+                    // console.log(homePosition);
+                    // console.log(result);
+                    // console.log(resultHome);
+                    // console.log(resultAway);
+                    // console.log(awayName);
+                    // console.log(awayPosition);
+                    // console.log(homeCorner);
+                    // console.log(awayCorner);
+                    // console.log(totalCorner);
+                    // console.log(odd);

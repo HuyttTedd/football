@@ -2,25 +2,16 @@ const puppeteer = require("puppeteer");
 const fs = require('fs');
 
 //node start
-const express = require('express')
-const bodyParser = require('body-parser')
 const mysql = require('mysql')
-
-const app = express()
-app.set("view engine", "ejs");
-const port = process.env.PORT || 5001;
 
 // Parsing middleware
 // Parse application/x-www-form-urlencoded
 // app.use(bodyParser.urlencoded({ extended: false })); // Remove 
-app.use(express.urlencoded({extended: true})); // New
 // Parse application/json
 // app.use(bodyParser.json()); // Remove
-app.use(express.json()); // New
 
 // MySQL Code goes here
 const pool  = mysql.createPool({
-    connectionLimit : 1000,
     host            : 'localhost',
     user            : 'root',
     password        : 'admin123',
@@ -28,8 +19,6 @@ const pool  = mysql.createPool({
     port            : '3309'
 });
 
-// Listen on enviroment port or 5000
-app.listen(port, () => console.log(`Listening on port ${port}`))
 //node end
 var dataReport = [];
 async function makeResult(url, fileIndex) {
@@ -182,8 +171,7 @@ async function makeResult(url, fileIndex) {
                     && awayPosition
                     && !isNaN(resultHome) 
                     && !isNaN(resultAway)
-                    && odd
-                    && odd != 0) 
+                    && (odd || odd == 0)) 
                 {
                     dataRow = {};
                     homeName = allTdData[5].childNodes[4].innerText;
@@ -196,20 +184,6 @@ async function makeResult(url, fileIndex) {
                     if (awayName.includes("(N)")) {
                         awayName = awayName.split("(").shift();
                     }
-                    // console.log(leagueName);
-                    // console.log(datetime);
-                    // console.log(completeState);
-                    // console.log(homeName);
-                    // console.log(homePosition);
-                    // console.log(result);
-                    // console.log(resultHome);
-                    // console.log(resultAway);
-                    // console.log(awayName);
-                    // console.log(awayPosition);
-                    // console.log(homeCorner);
-                    // console.log(awayCorner);
-                    // console.log(totalCorner);
-                    // console.log(odd);
                     //end remove
                     dataRow['leagueName'] = leagueName;
                     dataRow['datetime'] = datetime;
@@ -248,40 +222,6 @@ async function test() {
     return result;
 }
 
-
-app.get('', async (req, res) => {
-    let renderData = await test();
-    fs.writeFileSync('renderData.txt', JSON.stringify(renderData));
-    let mess = 'error';
-    let leagueId;
-    let statusInsertLeague = 0;
-    if (renderData) {
-        mess = 'done';
-        pool.getConnection(async (err, connection) => {
-            if(err) throw err
-            // console.log('connected as id ' + connection.threadId)
-            
-            for await (let row of renderData) {
-                leagueId = await getLeagueId(row['leagueName']);
-                    console.log(leagueId);
-                    console.log('+++++++++++++++');
-                if (!leagueId) {
-                    statusInsertLeague = await insertLeague(row['leagueName']);
-                    console.log('status INSERT start');
-                    console.log(statusInsertLeague);
-                    console.log('status INSERT');
-                    leagueId = await getLeagueId(row['leagueName']);
-                }
-
-                if (statusInsertLeague || leagueId) {
-                    await insertMatch(row, leagueId);
-                }
-            }
-        })
-    }
-    res.render("home.ejs", { mess });
-})
-
 async function insertLeague(leagueName) {
     return new Promise( (resolve) => {
         pool.getConnection((err, connection) => {
@@ -295,10 +235,10 @@ async function insertLeague(leagueName) {
             connection.query(sqlInsert, (e, result, fields) => {
                 connection.release();
                 if (e) {
-                    console.log(leagueName + " insert fail: " + e);
+                    // console.log(leagueName + " insert fail: " + e);
                     resolve(0);
                 } else {
-                    console.log("1 record inserted " + leagueName);
+                    // console.log("1 record inserted " + leagueName);
                     resolve(1);
                 }
             })
@@ -315,7 +255,6 @@ async function getLeagueId(leagueName) {
             if(err) throw err
             connection.query("SELECT * FROM league_entity WHERE name = '" + leagueName + "'", (err, rows) => {
                 connection.release();
-                console.log(rows);
                 if (!err) {
                     if (rows.length == 1) {
                         id = rows[0].entity_id;
@@ -364,10 +303,10 @@ async function insertMatch(data, leagueId) {
             connection.query(sqlInsert, (e, result, fields) => {
                 connection.release();
                 if (e) {
-                    console.log(data['datetime'] + " insert fail: " + e + ': home_id' + data['homeName']);
+                    // console.log(data['datetime'] + " insert fail: " + e + ': home_id' + data['homeName']);
                     resolve(0);
                 } else {
-                    console.log("1 record inserted " + data['datetime'] + ' : home_id' + data['homeName']);
+                    // console.log("1 record inserted " + data['datetime'] + ' : home_id' + data['homeName']);
                     resolve(1);
                 }
             })
@@ -378,10 +317,27 @@ async function insertMatch(data, leagueId) {
 }
 // const element = document.querySelector("#start-report-result");
 // element.addEventListener("click", () => {
-// 	(async function test() {
-//         const fileNameByDate = new Date();
-//         let time = fileNameByDate.getTime();
-//         console.log(time);
-//         await makeResult('https://www.bongdalu.fun/ket-qua-bong-da', time);
-//     })();
+	(async function run() {
+        let renderData = await test();
+        // fs.writeFileSync('renderData.txt', JSON.stringify(renderData));  
+        let leagueId;
+        let statusInsertLeague = 0;
+        if (renderData) {
+            pool.getConnection(async (err, connection) => {
+                if(err) throw err
+                for await (let row of renderData) {
+                    leagueId = await getLeagueId(row['leagueName']);
+                    if (!leagueId) {
+                        statusInsertLeague = await insertLeague(row['leagueName']);
+                        leagueId = await getLeagueId(row['leagueName']);
+                    }
+
+                    if (statusInsertLeague || leagueId) {
+                        await insertMatch(row, leagueId);
+                        console.log('done!');
+                    }
+                }
+            })
+        }
+    })();
 // });
