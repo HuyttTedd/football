@@ -61,6 +61,8 @@
                     <td class="result-match" style="background: green">WIN</td>
                 <% } else if (row['result'] == 0) { %>
                     <td class="result-match" style="background: red">LOSE</td>
+                <% } else if (row['result'] == 10) { %>
+                    <td class="result-match" style="background: purple">CHANGED ODD</td>
                 <% } %>
                 <td><%= row['position_range'] %></td>
                 <td><%= row['odd'] %></td>

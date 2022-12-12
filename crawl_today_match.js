@@ -7,13 +7,7 @@ const mysql = require('mysql')
 const port = process.env.PORT || 5003;
 
 // MySQL Code goes here
-const pool  = mysql.createPool({
-    host            : 'localhost',
-    user            : 'root',
-    password        : '',
-    database        : 'football'
-    // port            : '3309'
-});
+const pool  = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-config.json`)));
 
 // Listen on enviroment port or 5000
 //node end

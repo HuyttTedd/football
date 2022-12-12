@@ -1,5 +1,5 @@
 const express = require('express')
-const bodyParser = require('body-parser')
+const fs = require('fs');
 const mysql = require('mysql')
 const arrayOdd = [0.25, -0.25, 0.5, -0.5, 0.75, -0.75, 1, -1, 1.25, -1.25, 1.5, -1.5, 1.75, -1.75, 2, -2, 2.25, -2.25, 2.5, -2.5, 2.75, -2.75, 3, -3];
 const app = express()
@@ -11,14 +11,7 @@ app.use(express.urlencoded({extended: true})); // New
 app.use(express.json()); // New
 
 // MySQL Code goes here
-const pool  = mysql.createPool({
-    connectionLimit : 1000,
-    host            : 'localhost',
-    user            : 'root',
-    password        : 'admin123',
-    database        : 'football',
-    port            : '3309'
-});
+const pool  = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-config.json`)));
 
 // Listen on enviroment port or 5000
 app.listen(port, () => console.log(`Listening on port ${port}`))

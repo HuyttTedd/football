@@ -1,13 +1,7 @@
 const mysql = require('mysql')
-
+const fs = require('fs');
 // MySQL Code goes here
-const pool  = mysql.createPool({
-    host            : 'localhost',
-    user            : 'root',
-    password        : '',
-    database        : 'football'
-    // port            : '3309'
-});
+const pool  = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-config.json`)));
 
 
 pool.getConnection(async (err, connection) => {
