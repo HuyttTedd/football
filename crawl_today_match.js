@@ -2,28 +2,20 @@ const puppeteer = require("puppeteer");
 const fs = require('fs');
 
 //node start
-const express = require('express')
-const bodyParser = require('body-parser')
 const mysql = require('mysql')
 
-const app = express()
-app.set("view engine", "ejs");
 const port = process.env.PORT || 5003;
-app.use(express.urlencoded({extended: true})); // New
-app.use(express.json()); // New
 
 // MySQL Code goes here
 const pool  = mysql.createPool({
-    connectionLimit : 1000,
     host            : 'localhost',
     user            : 'root',
-    password        : 'admin123',
-    database        : 'football',
-    port            : '3309'
+    password        : '',
+    database        : 'football'
+    // port            : '3309'
 });
 
 // Listen on enviroment port or 5000
-app.listen(port, () => console.log(`Listening on port ${port}`))
 //node end
 var dataReport = [];
 async function makeResult(url, fileIndex) {
@@ -35,7 +27,7 @@ async function makeResult(url, fileIndex) {
      ]});
     const page = await browser.newPage();
     await page.goto(url);
-    await page.waitForTimeout(4500);
+    await page.waitForTimeout(6500);
 
     const dataText = await page.evaluate(() => {
         document.querySelector('.setit').click();
@@ -186,7 +178,7 @@ async function test() {
     return result;
 }
 
-app.get('', async (req, res) => {
+(async function run() {
     let renderData = await test();
     let mess = 'error';
     if (renderData) {
@@ -199,8 +191,7 @@ app.get('', async (req, res) => {
             }
         })
     }
-    res.render("today_match.ejs", { mess });
-})
+})();
 
 async function insertMatch(data) {
     return new Promise( (resolve) => {
@@ -276,6 +267,7 @@ async function insertMatch(data) {
             })
         });
     }).then((response) => {
+        console.log(response);
         return response;
     }); 
 }

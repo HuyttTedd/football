@@ -14,9 +14,9 @@ const mysql = require('mysql')
 const pool  = mysql.createPool({
     host            : 'localhost',
     user            : 'root',
-    password        : 'admin123',
-    database        : 'football',
-    port            : '3309'
+    password        : '',
+    database        : 'football'
+    // port            : '3309'
 });
 
 //node end
@@ -30,7 +30,7 @@ async function makeResult(url, fileIndex) {
      ]});
     const page = await browser.newPage();
     await page.goto(url);
-    await page.waitForTimeout(4500);
+    await page.waitForTimeout(6500);
 
     const dataText = await page.evaluate(() => {
         document.querySelector('.setit').click();

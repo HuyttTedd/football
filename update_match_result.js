@@ -2,12 +2,11 @@ const mysql = require('mysql')
 
 // MySQL Code goes here
 const pool  = mysql.createPool({
-    connectionLimit : 1000,
     host            : 'localhost',
     user            : 'root',
-    password        : 'admin123',
-    database        : 'football',
-    port            : '3309'
+    password        : '',
+    database        : 'football'
+    // port            : '3309'
 });
 
 
