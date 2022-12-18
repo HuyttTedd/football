@@ -167,7 +167,7 @@ async function makeResult(url, fileIndex) {
 async function test() {
     const fileNameByDate = new Date();
     let time = fileNameByDate.getTime();
-    let result = await makeResult('https://www.bongdalu.fun/', time);
+    let result = await makeResult('https://www.bongdalu2.com/', time);
 
     return result;
 }
@@ -200,7 +200,12 @@ async function insertMatch(data) {
             } else {
                 if (odd.includes('-') && odd.includes('/')) {
                     oddSplit = odd.split('/');
-                    realOdd = -1 * (oddSplit[1] - 0.25);
+                    if (oddSplit[1] < 0) {
+                        realOdd = oddSplit[1] - 0.25;
+                    } else {
+                        realOdd = -1 * (oddSplit[1] - 0.25);
+                    }
+
                 }
                 if (!odd.includes('-') && odd.includes('/')) {
                     oddSplit = odd.split('/');

@@ -16,14 +16,15 @@ const pool  = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-c
 // Listen on enviroment port or 5000
 app.listen(port, () => console.log(`Listening on port ${port}`))
 
-app.get('/result', async (req, res) => {
+app.get('/', async (req, res) => {
     let rows = await getResultMatchComplete();
+    let rowsNotComplete = await getResultMatchNotComplete();
     let dataByOdd = {};
     for await (let odd of arrayOdd) {
         dataByOdd[odd] = await getResultMatchCompleteByOdd(odd);
     }
 
-    res.render("view_result.ejs", { rows, dataByOdd, arrayOdd });
+    res.render("view_result.ejs", { rows, dataByOdd, arrayOdd, rowsNotComplete });
 })
 
 
@@ -33,6 +34,26 @@ async function getResultMatchComplete() {
             let id = 0;
             if(err) throw err
             connection.query("SELECT * FROM less_position_but_higher_odd_match WHERE result != '2' ORDER BY entity_id ASC", (err, rows) => {
+                connection.release();
+                if (!err) {
+                resolve(rows);
+                } else {
+                    console.log(err);
+                    resolve(0);
+                }
+            })
+        });
+    }).then((response) => {
+        return response;
+    }); 
+}
+
+async function getResultMatchNotComplete() {
+    return new Promise( (resolve) => {
+        pool.getConnection(async (err, connection) => {
+            let id = 0;
+            if(err) throw err
+            connection.query("SELECT * FROM less_position_but_higher_odd_match WHERE result = '2' ORDER BY entity_id ASC", (err, rows) => {
                 connection.release();
                 if (!err) {
                 resolve(rows);

@@ -41,6 +41,31 @@
 </head>
 <body>
     <table id="result" border="2" style="border-collapse:collapse;">
+        <caption id="total-result">MATCH NOT COMPLETE</caption>
+        <tr class="title">
+            <td>League Name</td>
+            <td>Date Time</td>
+            <td>Home Name</td>
+            <td>Away Name</td>
+            <td>Position Range</td>
+            <td>Odd</td>
+        </tr>
+        <% for (let row of rowsNotComplete) { %>
+            <% if (row['league_name'] == 'Giao hữu' || row['league_name'].includes('Cúp') || row['position_range'] < 3) { %>
+                <% continue; %>
+            <% } %>
+            <tr>
+                <td><%= row['league_name'] %></td>
+                <td class="datetime"><%= row['datetime'] %></td>
+                <td><%= row['home_name'] %></td>
+                <td><%= row['away_name'] %></td>
+                <td><%= row['position_range'] %></td>
+                <td><%= row['odd'] %></td>
+            </tr>
+         <% } %>
+    </table>
+
+    <table id="result" border="2" style="border-collapse:collapse;">
         <caption id="total-result">TOTAL RESULT</caption>
         <tr class="title">
             <td>League Name</td>
@@ -81,25 +106,42 @@
             <td>Position Range</td>
             <td>Odd</td>
         </tr>
+        <% let winCount, loseCount %>
         <% for (let odd of arrayOdd) { %>
+            <% let winCount = 0 %>
+            <% let loseCount = 0 %>
             <% if (dataByOdd[odd].length) { %>
                 <tr>
                     <td colspan="7" class="odd-title"><%= odd %></td>
                 </tr>
                 <% } %>
             <% for (let item of dataByOdd[odd]) { %>
+                <% if (item['league_name'] == 'Giao hữu' || item['league_name'].includes('Cúp') || item['position_range'] < 2) { %>
+                    <% continue; %>
+                <% } %>
                 <tr>
                     <td><%= item['league_name'] %></td>
                     <td class="datetime"><%= item['datetime'] %></td>
                     <td><%= item['home_name'] %></td>
                     <td><%= item['away_name'] %></td>
                     <% if (item['result'] == 1) { %>
+                        <% winCount++ %>
                         <td class="result-match" style="background: green">WIN</td>
                     <% } else if (item['result'] == 0) { %>
+                        <% loseCount++ %>
                         <td class="result-match" style="background: red">LOSE</td>
+                    <% } else if (item['result'] == 10) { %>
+                        <td class="result-match" style="background: purple">CHANGED ODD</td>
                     <% } %>
                     <td><%= item['position_range'] %></td>
                     <td><%= item['odd'] %></td>
+                </tr>
+            <% } %>
+
+            <% if (dataByOdd[odd].length) { %>
+                <tr>
+                    <td colspan="2" class="odd-title">WIN: <%= winCount %></td>
+                    <td colspan="2" class="odd-title">LOSE: <%= loseCount %></td>
                 </tr>
             <% } %>
          <% } %>

@@ -211,7 +211,7 @@ async function makeResult(url, fileIndex) {
 async function test() {
     const fileNameByDate = new Date();
     let time = fileNameByDate.getTime();
-    let result = await makeResult('https://www.bongdalu.fun/ket-qua-bong-da', time);
+    let result = await makeResult('https://www.bongdalu2.com/ket-qua-bong-da', time);
 
     return result;
 }
