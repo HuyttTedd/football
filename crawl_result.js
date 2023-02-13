@@ -292,7 +292,13 @@ async function insertMatch(data, leagueId) {
             if (data['awayName'].includes("'")) {
                 data['awayName'] = data['awayName'].replace("'", "");
             }
-            let sqlInsert = "INSERT INTO match_entity(league_id, datetime, home_name, away_name, home_position, away_position, home_result, away_result, home_corner, away_corner, total_corner, odd)" + 
+            //format datetime
+            if (data['datetime'].includes(" ")) {
+                let splitDateTime = data['datetime'].split(" ");
+                data['datetime'] = splitDateTime[0];
+            }
+            
+            let sqlInsert = "INSERT INTO match_result_entity(league_id, datetime, home_name, away_name, home_position, away_position, home_result, away_result, home_corner, away_corner, total_corner, odd)" + 
                                 " VALUES ('"+ leagueId +"','"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','"+ data['homePosition'] +"','"+ data['awayPosition'] +"','"+ data['resultHome'] +"','"+ data['resultAway'] +"','"+ data['homeCorner'] +"','"+ data['awayCorner'] +"','"+ data['totalCorner'] +"','"+ data['odd'] +"')";
             connection.query(sqlInsert, (e, result, fields) => {
                 connection.release();

@@ -116,7 +116,12 @@
                 </tr>
                 <% } %>
             <% for (let item of dataByOdd[odd]) { %>
-                <% if (item['league_name'] == 'Giao hữu' || item['league_name'].includes('Cúp') || item['position_range'] < 2) { %>
+                <% if (item['league_name'] == 'Giao hữu' 
+                || item['league_name'].includes('Cúp') 
+                || item['position_range'] < 2 
+                || item['league_name'].includes('U2')
+                || item['league_name'].includes('Hạng 3')
+                ) { %>
                     <% continue; %>
                 <% } %>
                 <tr>

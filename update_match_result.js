@@ -59,7 +59,7 @@ async function getMatchComplete(datetime, homeName, awayName) {
             let datetimeSplit = datetime.split(" ");
             if (datetimeSplit.length == 2) {
                 datetime = datetimeSplit[0];
-                let getCompleteMatchQuery = "SELECT * FROM match_entity WHERE datetime LIKE '%"
+                let getCompleteMatchQuery = "SELECT * FROM match_result_entity WHERE datetime LIKE '%"
                 + datetime + "%' AND home_name='" + homeName + "' AND away_name='" + awayName + "'";
                 if(err) throw err
                 connection.query(getCompleteMatchQuery, (err, rows) => {
@@ -157,7 +157,7 @@ async function insertMatch(data, leagueId) {
                     data['awayName'] = data['awayName'].replace("'", "");
                 }
 
-            let sqlInsert = "INSERT INTO match_entity(league_id, datetime, home_name, away_name, home_position, away_position, home_corner, away_corner, total_corner, odd)" + 
+            let sqlInsert = "INSERT INTO match_result_entity(league_id, datetime, home_name, away_name, home_position, away_position, home_corner, away_corner, total_corner, odd)" + 
                                 " VALUES ('"+ leagueId +"','"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','"+ data['homePosition'] +"','"+ data['awayPosition'] +"','"+ data['homeCorner'] +"','"+ data['awayCorner'] +"','"+ data['totalCorner'] +"','"+ data['odd'] +"')";
             connection.query(sqlInsert, (e, result, fields) => {
                 connection.release();

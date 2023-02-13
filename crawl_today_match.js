@@ -237,6 +237,13 @@ async function insertMatch(data) {
             if (data['leagueName'].includes("'")) {
                 data['leagueName']= data['leagueName'].replace("'", "");
             }
+
+            //format datetime ko dc vì các trận đấu ko đc cùng time nhau
+            // if (data['datetime'].includes(" ")) {
+            //     let splitDateTime = data['datetime'].split(" ");
+            //     data['datetime'] = splitDateTime[0];
+            // }
+
             // result: 	2 is not set, 1 is win, 0 is lose
             if (isLessButHigh) {
                 let sqlInsertLessPosition = "INSERT INTO less_position_but_higher_odd_match(league_name, datetime, home_name, away_name, result, position_range, odd)" + 
@@ -252,8 +259,8 @@ async function insertMatch(data) {
                 })
             }
 
-            let sqlInsertTodayMatch = "INSERT INTO new_match_today(league_name, datetime, home_name, away_name, home_position, away_position, odd, odd_converted)" + 
-                                " VALUES ('"+ data['leagueName'] +"','"+ data['datetime'] +"', '"+ data['homeName'] +"','"+ data['awayName'] +"','"+ data['homePosition'] +"','"+ data['awayPosition'] +"','"+ data['odd'] +"','"+ realOdd +"')";
+            let sqlInsertTodayMatch = "INSERT INTO new_match_today(league_name, datetime, result, home_name, away_name, home_position, away_position, odd, odd_converted)" + 
+                                " VALUES ('"+ data['leagueName'] +"','"+ data['datetime'] +"','2', '"+ data['homeName'] +"','"+ data['awayName'] +"','"+ data['homePosition'] +"','"+ data['awayPosition'] +"','"+ data['odd'] +"','"+ realOdd +"')";
             connection.query(sqlInsertTodayMatch, (e, result, fields) => {
                 connection.release();
                 if (e) {
