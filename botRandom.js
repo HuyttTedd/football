@@ -16,13 +16,12 @@ const pool = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-co
     let dataRandomMatchAll = await getMatchNotCompleteAndNotInListAll();
     let matchsSelectedForAllOdd;
     let matchsSelectedForEachOdd = [];
-    
     if (dataRandomMatchAll) {
         matchsSelectedForAllOdd = randomMatch(dataRandomMatchAll, MATCH_COUNT);
-        if (matchsSelectedForAllOdd) {
-            console.log(matchsSelectedForAllOdd);
-            await insertRandomListItem(matchsSelectedForAllOdd, 'all');
-        }
+        // if (matchsSelectedForAllOdd) {
+        //     console.log(matchsSelectedForAllOdd);
+        //     await insertRandomListItem(matchsSelectedForAllOdd, 'all');
+        // }
     }
 
     // let dataByOdd;
@@ -40,7 +39,7 @@ const pool = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-co
 })();
 
 async function getMatchNotCompleteAndNotInListAll() {
-    let selectQuery = "SELECT entity_id FROM new_match_today newmatch WHERE newmatch.result = '2' AND newmatch.odd != '0' AND entity_id NOT IN " + 
+    let selectQuery = "SELECT entity_id, datetime FROM new_match_today newmatch WHERE newmatch.result = '2' AND newmatch.odd != '0' AND entity_id NOT IN " +
                         // get all list_id have odd = all and get all match_id in those lists then get NOT IN table less_position_but_higher_odd_match
                     // "(SELECT match_id FROM random_list_item WHERE list_id IN (SELECT entity_id from random_list WHERE odd='all'))" +
                     "(SELECT match_id FROM random_list_item)" +
@@ -59,28 +58,110 @@ async function getMatchNotCompleteAndNotInListAll() {
 
 
 function randomMatch(matchs, match_count, failedCount = 0) {
-    let arrMatch = [];
-    let groupMatch = [];
-    let randomResult = [];
-    let key;
-    for (let match of matchs) {
-        arrMatch.push(match.entity_id);
+    let maxFailCount = 99999;
+    let failCount = 0;
+    let matchsSelected;
+    while(failCount < maxFailCount && !matchsSelected) {
+        matchsSelected = getRandom(matchs, match_count);
+        failCount++;
     }
-    key = Math.floor(Math.random() * arrMatch.length);
+    console.log(matchsSelected);
+    let arrTimeCheck = [];
+}
 
-    while (arrMatch.length != 0 || (arrMatch.length < match_count && arrMatch.length % match_count != 0)) {
-        if (groupMatch.length == match_count) {
-            randomResult.push(groupMatch);
-            groupMatch = [];
+function getRandom(arr, maxCount) {
+    console.log(arr)
+    let arrBackup = [...arr];
+    let randomIndex;
+    let canUseThisArr = false;
+    let count = 0;
+    let arrStreak = [];
+
+    if (arr.length < maxCount) {
+        maxCount = arr.length;
+    }
+
+    if (arr.length === maxCount) {
+        canUseThisArr = checkValidTime(arr);
+        if (!canUseThisArr) {
+            return [];
         }
-        key = Math.floor(Math.random() * arrMatch.length);
-        groupMatch.push(arrMatch[key]);
-        arrMatch.splice(key, 1);
     }
 
-    return randomResult;
-    //delete by key
-    // console.log(randomResult);
+    let maxFailCount = 9999;
+    let failCount = 0;
+
+    //if first value chosen is too large. we need to random again
+    let failCountAtLength1 = 0;
+    let valueSelected = [];
+    while (count < maxCount && failCount < maxFailCount) {
+        randomIndex = Math.floor(Math.random() * arrBackup.length);
+        console.log(randomIndex)
+        if (arrStreak.length === 0) {
+            arrStreak.push(arrBackup[randomIndex]);
+            arrBackup.splice(randomIndex, 1);
+            count++;
+        } else if (arrStreak.length === 1) {
+            if (getSubDateValueAbs(arrBackup[randomIndex].datetime, arrStreak[0].datetime)) {
+                if (arrBackup[randomIndex].datetime > arrStreak[0].datetime) {
+                    arrStreak.push(arrBackup[randomIndex]);
+                } else {
+                    arrStreak.unshift(arrBackup[randomIndex]);
+                }
+                arrBackup.splice(randomIndex, 1);
+                sortStreakMinToMax(arrStreak);
+                count++;
+            }
+        } else {
+            let lastIndex = arrStreak.length - 1;
+            if (getSubDateValue(arrStreak[0].datetime, arrBackup[randomIndex].datetime)) {
+                arrStreak.unshift(arrBackup[randomIndex]);
+                arrBackup.splice(randomIndex, 1);
+                count++;
+            } else if (getSubDateValue(arrBackup[randomIndex].datetime, arrStreak[lastIndex].datetime)) {
+                arrStreak.push(arrBackup[randomIndex]);
+                arrBackup.splice(randomIndex, 1);
+                count++;
+            }
+        }
+        failCount++;
+        console.log(arrStreak);
+    }
+
+    if (failCount === maxFailCount && arrStreak.length < maxCount) {
+        return [];
+    }
+    return arrStreak;
+}
+
+function checkValidTime(streak) {
+    let canUseThisRandom = true;
+    for (let i = 0; i < streak.length; i++) {
+        if (((new Date(arrTimeCheck[i].datetime) - new Date(arrTimeCheck[i + 1].datetime)) / 1000) > 7200) {
+            canUseThisRandom = false;
+            break;
+        }
+    }
+
+    return canUseThisRandom;
+}
+
+function getSubDateValue(dateA, dateB, timeDistance = 7200) {
+    let subValue = (new Date(dateA) - new Date(dateB)) / 1000;
+    return subValue > timeDistance;
+}
+
+function getSubDateValueAbs(dateA, dateB, timeDistance = 7200) {
+    let subValue = Math.abs(new Date(dateA) - new Date(dateB)) / 1000;
+    return subValue > timeDistance;
+}
+
+function sortStreakMinToMax(streak) {
+    streak.sort(function (a, b) {
+        return new Date(a.datetime) - new Date(b.datetime);
+    });
+
+    return streak;
 }
 
 async function insertRandomListItem(data, odd) {

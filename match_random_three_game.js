@@ -51,6 +51,9 @@ async function insertRandomListItem(data, odd) {
     // await pool.awaitEnd();
 }
 
+//flow: random with time between matches is 2 hours
+//random a match to push to arr random
+//random next match ->check time of this match is longer or shorter than "the last" and "the first" of arr random or not then push it
 function randomMatch(matchs, match_count, failedCount = 0) {
     let matchsSelected = getRandom(matchs, match_count);
     let arrTimeCheck = [];
@@ -100,7 +103,7 @@ function getRandom(arr, num) {
     }
 
     while (count < num) {
-      randomElementIndex = Math.floor(Math.random()*arrBackup.length);
+      randomElementIndex = Math.floor(Math.random() * arrBackup.length);
       arrRandom.push(arrBackup[randomElementIndex]);
       // arr.splice(2, 1, 'tmp');	// Replaces 1 item at index 2 with 'tmp'
       arrBackup.splice(randomElementIndex, 1);
