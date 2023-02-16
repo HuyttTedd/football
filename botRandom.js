@@ -42,7 +42,9 @@ async function getMatchNotCompleteAndNotInListAll() {
     return result;
 }
 
-
+//flow: random with time between matches is 2 hours
+//random a match to push to arr random
+//random next match ->check time of this match is longer or shorter than "the last" and "the first" of arr random or not then push it
 function randomMatch(matchs, match_count, failedCount = 0) {
     let maxFailCount = 1000;
     let failCount = 0;

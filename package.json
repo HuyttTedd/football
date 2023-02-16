@@ -15,7 +15,7 @@
     "fs": "0.0.1-security",
     "mysql": "^2.18.1",
     "mysql-await": "^2.2.3",
-    "puppeteer": "^19.3.0"
+    "puppeteer": "^19.7.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

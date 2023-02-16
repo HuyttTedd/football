@@ -30,13 +30,32 @@
     <table id="result-by-streak" border="2" style="border-collapse:collapse;">
         <caption class="total-result">MATCH NOT COMPLETE</caption>
         <tr class="title">
-            <td>League Name</td>
-            <td>Date Time</td>
-            <td>Home Name</td>
-            <td>Away Name</td>
-            <td>Odd</td>
+            <th>Streak ID</th>
+            <th>League Name</th>
+            <th>Date Time</th>
+            <th>Home Name</th>
+            <th>Away Name</th>
+            <th>Odd</th>
+            <th>Result</th>
         </tr>
-
+        <% for (let item in dataStreak) { %>
+            <tr>
+                <th colspan="7">------------</th>
+            </tr>
+            <tr>
+                <td rowspan=<%= dataStreak[item].length + 1 %>><%= item %></td>
+            </tr>
+            <% for (let row of dataStreak[item]) { %>
+                <tr>
+                    <td><%= row['league_name'] %></td>
+                    <td><%= row['datetime'] %></td>
+                    <td><%= row['home_name'] %></td>
+                    <td><%= row['away_name'] %></td>
+                    <td><%= row['odd_converted'] %></td>
+                    <td>Result</td>
+                </tr>
+             <% } %>
+         <% } %>
     </table>
 </body>
 </html>

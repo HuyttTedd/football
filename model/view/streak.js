@@ -28,8 +28,9 @@ app.get('/view/streak.html', async (req, res) => {
         dataStreak[item['list_id']].push(item);
     }
 
-    for (let item of dataStreak) {
+    for (let item in dataStreak) {
         console.log(item)
+        console.log(dataStreak[item])
     }
 
     res.render("streak.ejs", { streak, dataStreak });
