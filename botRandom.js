@@ -3,7 +3,7 @@ let oddTo = 5;
 let arrayOdd_0_5 = [];
 while (oddFrom <= oddTo) {
     arrayOdd_0_5.push(oddFrom);
-    oddFrom += 0.5;
+    oddFrom += 0.25;
 }
 
 const MATCH_COUNT = 4;
@@ -15,27 +15,13 @@ const pool = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-co
 (async function run() {
     let dataRandomMatchAll = await getMatchNotCompleteAndNotInListAll();
     let matchsSelectedForAllOdd;
-    let matchsSelectedForEachOdd = [];
+    // console.log(dataRandomMatchAll)
     if (dataRandomMatchAll) {
         matchsSelectedForAllOdd = randomMatch(dataRandomMatchAll, MATCH_COUNT);
-        // if (matchsSelectedForAllOdd) {
-        //     console.log(matchsSelectedForAllOdd);
-        //     await insertRandomListItem(matchsSelectedForAllOdd, 'all');
-        // }
+        if (matchsSelectedForAllOdd) {
+            await insertRandomListItem(matchsSelectedForAllOdd, 'all');
+        }
     }
-
-    // let dataByOdd;
-    // for (let odd of arrayOdd) {
-    //     matchsSelectedForEachOdd = await getMatchNotCompleteAndNotInOddList(odd);
-    //     dataByOdd = randomMatch(matchsSelectedForEachOdd, MATCH_COUNT);
-
-    //     console.log(dataByOdd);
-    //     console.log(odd);
-    //     console.log('--------------------------------------');
-    //     if (dataByOdd) {
-    //         await insertRandomListItem(dataByOdd, odd);
-    //     }
-    // }
 })();
 
 async function getMatchNotCompleteAndNotInListAll() {
@@ -58,15 +44,23 @@ async function getMatchNotCompleteAndNotInListAll() {
 
 
 function randomMatch(matchs, match_count, failedCount = 0) {
-    let maxFailCount = 99999;
+    let maxFailCount = 1000;
     let failCount = 0;
-    let matchsSelected;
-    while(failCount < maxFailCount && !matchsSelected) {
-        matchsSelected = getRandom(matchs, match_count);
+    let streak;
+    let totalStreak = [];
+    let dataRandom;
+    while(failCount < maxFailCount) {
+        dataRandom = getRandom(matchs, match_count);
+        streak = dataRandom[0];
+        matchs = dataRandom[1];
+        if (streak.length > 0 && streak.length === match_count) {
+            totalStreak.push(streak);
+            streak = [];
+        }
         failCount++;
     }
-    console.log(matchsSelected);
-    let arrTimeCheck = [];
+
+    return totalStreak;
 }
 
 function getRandom(arr, maxCount) {
@@ -84,11 +78,11 @@ function getRandom(arr, maxCount) {
     if (arr.length === maxCount) {
         canUseThisArr = checkValidTime(arr);
         if (!canUseThisArr) {
-            return [];
+            return [[], arr];
         }
     }
 
-    let maxFailCount = 9999;
+    let maxFailCount = 1000;
     let failCount = 0;
 
     //if first value chosen is too large. we need to random again
@@ -96,11 +90,11 @@ function getRandom(arr, maxCount) {
     let valueSelected = [];
     while (count < maxCount && failCount < maxFailCount) {
         randomIndex = Math.floor(Math.random() * arrBackup.length);
-        console.log(randomIndex)
         if (arrStreak.length === 0) {
             arrStreak.push(arrBackup[randomIndex]);
             arrBackup.splice(randomIndex, 1);
             count++;
+            continue;
         } else if (arrStreak.length === 1) {
             if (getSubDateValueAbs(arrBackup[randomIndex].datetime, arrStreak[0].datetime)) {
                 if (arrBackup[randomIndex].datetime > arrStreak[0].datetime) {
@@ -111,6 +105,7 @@ function getRandom(arr, maxCount) {
                 arrBackup.splice(randomIndex, 1);
                 sortStreakMinToMax(arrStreak);
                 count++;
+                continue;
             }
         } else {
             let lastIndex = arrStreak.length - 1;
@@ -118,26 +113,27 @@ function getRandom(arr, maxCount) {
                 arrStreak.unshift(arrBackup[randomIndex]);
                 arrBackup.splice(randomIndex, 1);
                 count++;
+                continue;
             } else if (getSubDateValue(arrBackup[randomIndex].datetime, arrStreak[lastIndex].datetime)) {
                 arrStreak.push(arrBackup[randomIndex]);
                 arrBackup.splice(randomIndex, 1);
                 count++;
+                continue;
             }
         }
         failCount++;
-        console.log(arrStreak);
     }
 
-    if (failCount === maxFailCount && arrStreak.length < maxCount) {
-        return [];
+    if (failCount === maxFailCount || arrStreak.length < maxCount) {
+        return [[], arr];
     }
-    return arrStreak;
+    return [arrStreak, arrBackup];
 }
 
 function checkValidTime(streak) {
     let canUseThisRandom = true;
-    for (let i = 0; i < streak.length; i++) {
-        if (((new Date(arrTimeCheck[i].datetime) - new Date(arrTimeCheck[i + 1].datetime)) / 1000) > 7200) {
+    for (let i = 0; i < streak.length - 1; i++) {
+        if (((new Date(streak[i].datetime) - new Date(streak[i + 1].datetime)) / 1000) > 7200) {
             canUseThisRandom = false;
             break;
         }
@@ -165,21 +161,21 @@ function sortStreakMinToMax(streak) {
 }
 
 async function insertRandomListItem(data, odd) {
-    let maxId;
+    let listId;
     const connection = await pool.awaitGetConnection();
     connection.on(`error`, (err) => {
         console.error(`Connection error ${err.code}`);
     });
     await connection.awaitBeginTransaction();
     for (let item of data) {
-    await connection.awaitQuery(`INSERT INTO random_list(match_count, odd) VALUES (?, ?)`, [data.length, odd]);
-    let resultMax = await connection.awaitQuery(`SELECT MAX(entity_id) as max_entity from random_list`);
-    maxId = resultMax[0]['max_entity'];
+        await connection.awaitQuery(`INSERT INTO random_list(match_count, odd) VALUES (?, ?)`, [item.length, odd]);
+        let resultMax = await connection.awaitQuery(`SELECT MAX(entity_id) as max_entity from random_list`);
+        listId = resultMax[0]['max_entity'];
 
-    console.log('aaaa');
-        console.log(item);
+        console.log(listId);
+        console.log('**********');
         for (let it of item) {
-            await connection.awaitQuery(`INSERT INTO random_list_item(list_id, match_id) VALUES (?, ?)`, [maxId, it]);
+            await connection.awaitQuery(`INSERT INTO random_list_item(list_id, match_id) VALUES (?, ?)`, [listId, it.entity_id]);
         }
     }
 

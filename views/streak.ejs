@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Today Match</title>
+</head>
+<body>
+    <div id="crawl-status"></div>
+    <table id="result" border="2" style="border-collapse:collapse;">
+        <caption id="total-result">MATCH NOT COMPLETE</caption>
+        <tr class="title">
+            <td>League Name</td>
+            <td>Date Time</td>
+            <td>Home Name</td>
+            <td>Away Name</td>
+            <td>Odd</td>
+        </tr>
+        <% for (let row of streak) { %>
+            <tr>
+                <td><%= row['league_name'] %></td>
+                <td class="datetime"><%= row['datetime'] %></td>
+                <td><%= row['home_name'] %></td>
+                <td><%= row['away_name'] %></td>
+                <td><%= row['odd_converted'] %></td>
+            </tr>
+         <% } %>
+    </table>
+    <table id="result-by-streak" border="2" style="border-collapse:collapse;">
+        <caption class="total-result">MATCH NOT COMPLETE</caption>
+        <tr class="title">
+            <td>League Name</td>
+            <td>Date Time</td>
+            <td>Home Name</td>
+            <td>Away Name</td>
+            <td>Odd</td>
+        </tr>
+
+    </table>
+</body>
+</html>

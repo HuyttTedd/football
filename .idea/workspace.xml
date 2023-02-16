@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3d3c94ee-6c9c-4de2-8a26-4675b27f90ca" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/model/view/streak.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/streak.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/botRandom.js" beforeDir="false" afterPath="$PROJECT_DIR$/botRandom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_random_three_game.js" beforeDir="false" afterPath="$PROJECT_DIR$/match_random_three_game.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysql-await/mysql-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/mysql-await/mysql-config.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,11 +45,22 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1676445501437</updated>
-      <workItem from="1676445502571" duration="12743000" />
+      <workItem from="1676445502571" duration="30029000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
