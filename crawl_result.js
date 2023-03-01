@@ -26,14 +26,14 @@ async function makeResult(url, fileIndex) {
     await page.goto(url);
     await page.waitForTimeout(6500);
 
-    const dataText = await page.evaluate(() => {
-        document.querySelector('.setit').click();
-        document.querySelector('#otc_1').click();
-        document.querySelector('#otc_2').click();
-        document.querySelector('#otc_3').click();
-        let items = document.querySelector("body").outerHTML;
-        return items;
-    });
+    // const dataText = await page.evaluate(() => {
+    //     document.querySelector('.setit').click();
+    //     document.querySelector('#otc_1').click();
+    //     document.querySelector('#otc_2').click();
+    //     document.querySelector('#otc_3').click();
+    //     let items = document.querySelector("body").outerHTML;
+    //     return items;
+    // });
     await page.waitForTimeout(1000);
     var dataReport = [];
 

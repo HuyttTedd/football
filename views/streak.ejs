@@ -36,7 +36,8 @@
             <th>Home Name</th>
             <th>Away Name</th>
             <th>Odd</th>
-            <th>Result</th>
+            <th>Home Result</th>
+            <th>Away Result</th>
         </tr>
         <% for (let item in dataStreak) { %>
             <tr>
@@ -52,7 +53,8 @@
                     <td><%= row['home_name'] %></td>
                     <td><%= row['away_name'] %></td>
                     <td><%= row['odd_converted'] %></td>
-                    <td>Result</td>
+                    <td><%= row['home_result'] %></td>
+                    <td><%= row['away_result'] %></td>
                 </tr>
              <% } %>
          <% } %>

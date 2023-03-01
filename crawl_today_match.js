@@ -14,23 +14,23 @@ const pool  = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-c
 var dataReport = [];
 async function makeResult(url, fileIndex) {
     self = this;
-    const browser = await puppeteer.launch({ headless: true, 
+    const browser = await puppeteer.launch({ headless: false, 
         defaultViewport: null, 
         args:[
         '--start-maximized'
      ]});
     const page = await browser.newPage();
-    await page.goto(url);
+    await page.goto(url, {timeout:0});
     await page.waitForTimeout(6500);
-
-    const dataText = await page.evaluate(() => {
-        document.querySelector('.setit').click();
-        document.querySelector('#otc_1').click();
-        document.querySelector('#otc_2').click();
-        document.querySelector('#otc_3').click();
-        let items = document.querySelector("body").outerHTML;
-        return items;
-    });
+    
+    // const dataText = await page.evaluate(() => {
+    //     document.querySelector('.setit').click();
+    //     document.querySelector('#otc_1').click();
+    //     document.querySelector('#otc_2').click();
+    //     document.querySelector('#otc_3').click();
+    //     let items = document.querySelector("body").outerHTML;
+    //     return items;
+    // });
     await page.waitForTimeout(1000);
     var dataReport = [];
 

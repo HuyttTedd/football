@@ -7,9 +7,9 @@ while (oddFrom <= oddTo) {
 }
 
 let str_0_5 = arrayOdd_0_5.join(',');
-str_0_5 = [0.5, -0.5, 1.5, -1.5];
+str_0_5 = [0.5, -0.5];
 
-const MATCH_COUNT = 4;
+const MATCH_COUNT = 3;
 const fs = require(`fs`);
 const mysql = require(`./mysql-await/index`);
 const pool = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-config.json`)));
@@ -171,7 +171,7 @@ async function insertRandomListItem(data, odd) {
     });
     await connection.awaitBeginTransaction();
     for (let item of data) {
-        await connection.awaitQuery(`INSERT INTO random_list(match_count, odd) VALUES (?, ?)`, [item.length, odd]);
+        await connection.awaitQuery(`INSERT INTO random_list(match_count, odd, result) VALUES (?, ?, ?)`, [item.length, odd, '0']);
         let resultMax = await connection.awaitQuery(`SELECT MAX(entity_id) as max_entity from random_list`);
         listId = resultMax[0]['max_entity'];
 

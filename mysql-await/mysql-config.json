@@ -1,5 +1,5 @@
 {
-    "connectionLimit" : 1000,
+    "connectionLimit" : 9999990,
     "host"            : "localhost",
     "user"            : "root",
     "password"        : "admin123",
