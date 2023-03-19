@@ -9,7 +9,7 @@ while (oddFrom <= oddTo) {
 let str_0_5 = arrayOdd_0_5.join(',');
 str_0_5 = [0.5, -0.5];
 
-const MATCH_COUNT = 3;
+const MATCH_COUNT = 4;
 const fs = require(`fs`);
 const mysql = require(`./mysql-await/index`);
 const pool = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-config.json`)));

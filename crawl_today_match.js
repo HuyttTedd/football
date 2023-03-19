@@ -6,7 +6,7 @@ const mysql = require('mysql')
 
 const port = process.env.PORT || 5003;
 
-// MySQL Code goes here
+/// MySQL Code goes here
 const pool  = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-config.json`)));
 
 // Listen on enviroment port or 5000
