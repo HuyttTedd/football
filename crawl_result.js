@@ -17,7 +17,7 @@ const pool  = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-c
 var dataReport = [];
 async function makeResult(url, fileIndex) {
     self = this;
-    const browser = await puppeteer.launch({ headless: true, 
+    const browser = await puppeteer.launch({ headless: true,
         defaultViewport: null, 
         args:[
         '--start-maximized'
@@ -26,14 +26,15 @@ async function makeResult(url, fileIndex) {
     await page.goto(url);
     await page.waitForTimeout(6500);
 
-    // const dataText = await page.evaluate(() => {
-    //     document.querySelector('.setit').click();
+    const dataText = await page.evaluate(() => {
+        document.querySelector('#li_ShowAll').click();
+        //     document.querySelector('.setit').click();
     //     document.querySelector('#otc_1').click();
     //     document.querySelector('#otc_2').click();
     //     document.querySelector('#otc_3').click();
     //     let items = document.querySelector("body").outerHTML;
     //     return items;
-    // });
+    });
     await page.waitForTimeout(1000);
     var dataReport = [];
 
@@ -158,6 +159,10 @@ async function makeResult(url, fileIndex) {
                     }
                 }
 
+                if (!leagueName) {
+                    leagueName = "Not defined!";
+                }
+
                 if (completeState === 'FT' 
                     && leagueName
                     && datetime
@@ -211,7 +216,7 @@ async function makeResult(url, fileIndex) {
 async function test() {
     const fileNameByDate = new Date();
     let time = fileNameByDate.getTime();
-    let result = await makeResult('https://www.bongdalu2.com/ket-qua-bong-da', time);
+    let result = await makeResult('https://www.bongdalu4.com/ket-qua-bong-da', time);
 
     return result;
 }
@@ -334,7 +339,7 @@ async function insertMatch(data, leagueId) {
 
                     if (statusInsertLeague || leagueId) {
                         await insertMatch(row, leagueId);
-                        console.log('done!');
+                        console.log('done! ' + row['homeName']);
                     }
                 }
             })

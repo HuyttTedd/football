@@ -14,7 +14,7 @@ const pool  = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-c
 var dataReport = [];
 async function makeResult(url, fileIndex) {
     self = this;
-    const browser = await puppeteer.launch({ headless: false, 
+    const browser = await puppeteer.launch({ headless: true,
         defaultViewport: null, 
         args:[
         '--start-maximized'
@@ -23,15 +23,16 @@ async function makeResult(url, fileIndex) {
     await page.goto(url, {timeout:0});
     await page.waitForTimeout(6500);
     
-    // const dataText = await page.evaluate(() => {
+    const dataText = await page.evaluate(() => {
     //     document.querySelector('.setit').click();
+        document.querySelector('#li_ShowAll').click();
     //     document.querySelector('#otc_1').click();
     //     document.querySelector('#otc_2').click();
     //     document.querySelector('#otc_3').click();
     //     let items = document.querySelector("body").outerHTML;
     //     return items;
-    // });
-    await page.waitForTimeout(1000);
+    });
+    await page.waitForTimeout(4000);
     var dataReport = [];
 
     //get result
@@ -122,6 +123,10 @@ async function makeResult(url, fileIndex) {
                     if (isNaN(awayPosition)) awayPosition = false;
                     // end check away's rank
                 }
+
+                if (!leagueName) {
+                    leagueName = "Not defined!";
+                }
                 
                 if (leagueName
                     && datetime
@@ -167,7 +172,7 @@ async function makeResult(url, fileIndex) {
 async function test() {
     const fileNameByDate = new Date();
     let time = fileNameByDate.getTime();
-    let result = await makeResult('https://www.bongdalu2.com/', time);
+    let result = await makeResult('https://www.bongdalu4.com/', time);
 
     return result;
 }
