@@ -48,6 +48,7 @@ async function makeResult(url, fileIndex) {
         var dataReport = [];
         var dataRow = {};
         let tableResult = document.querySelectorAll('#table_live tbody tr');
+        var leagueNameFlag;
         tableResult.forEach(element => {
             leagueName = '',
             datetime = '',
@@ -60,7 +61,12 @@ async function makeResult(url, fileIndex) {
             let elementId = element.getAttribute('id');
             let elementClass = element.className;
             let allTdData = element.querySelectorAll('td');
-            if(elementId != 'topLine' 
+            //check league name
+            if(element.classList.contains('Leaguestitle')) {
+                leagueNameFlag = allTdData[1]?.firstChild?.childNodes[1]?.innerText;
+            }
+            leagueName = leagueNameFlag;
+            if(elementId != 'topLine'
             && elementId != 'tr_0' 
             && typeof elementId == 'string'
             && typeof elementClass == 'string'
@@ -68,11 +74,6 @@ async function makeResult(url, fileIndex) {
             && !elementClass.includes("adtext-bg")
             && element.style.display != 'none'
             && allTdData.length > 10) {
-                //check league name
-                leagueName = allTdData[1]?.attributes?.title?.textContent;
-                if (!leagueName) {
-                    leagueName = allTdData[1].innerText;
-                }
                 //check date time
                 datetime = allTdData[2]?.dataset?.t;
                 // check complete state
@@ -282,4 +283,3 @@ async function insertMatch(data) {
         return response;
     }); 
 }
-
