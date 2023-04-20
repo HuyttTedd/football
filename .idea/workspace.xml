@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3d3c94ee-6c9c-4de2-8a26-4675b27f90ca" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawl_result.js" beforeDir="false" afterPath="$PROJECT_DIR$/crawl_result.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawl_today_match.js" beforeDir="false" afterPath="$PROJECT_DIR$/crawl_today_match.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/view/streak.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/view/streak.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/streak.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/streak.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql-await/mysql-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/mysql-await/mysql-config.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +58,16 @@
       <workItem from="1680264998292" duration="809000" />
       <workItem from="1680319180550" duration="924000" />
       <workItem from="1680391471277" duration="663000" />
+      <workItem from="1681875066439" duration="331000" />
     </task>
+    <task id="LOCAL-00001" summary="Fix crawl today match not have league name">
+      <created>1681875134464</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1681875134464</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -79,5 +84,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fix crawl today match not have league name" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix crawl today match not have league name" />
   </component>
 </project>

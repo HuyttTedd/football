@@ -1,1 +1,0 @@
-[{"leagueName":"INT CF","datetime":"2022-12-06 13:00:00","homeName":"Atromitos Athens","homePosition":"8","awayName":"Nottingham Forest","awayPosition":"18","odd":"-1"}]
