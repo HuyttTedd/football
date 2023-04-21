@@ -1,3 +1,4 @@
+// import { getMainTable } from "../model/resourceModel/liveMatchContent.js";
 const fs = require(`fs`);
 const puppeteer = require("puppeteer");
 const mysql = require(`../mysql-await/index`);
@@ -5,16 +6,33 @@ const { exit } = require("process");
 const { log } = require("console");
 const pool = mysql.createPool(JSON.parse(fs.readFileSync(`./mysql-await/mysql-config.json`)));
 const liveUrl = 'https://www.bongdalu4.com/';
-const reg = /onclick="(.*?)"/g;
+
+const liveTable = require("../model/resourceModel/liveMatchContent.js");
 (async function run() {
     let time = new Date().getTime();
-    let dataRandomMatchAll = await crawlLiveMatch(liveUrl, time);
+    let content = await crawlLiveMatch(liveUrl, time);
+    await updateContent(content);
     process.exit(1);
 })();
 
+async function updateContent(content) {
+    const connection = await pool.awaitGetConnection();
+    try {
+        let tableLiveMatch = liveTable();
+        await connection.awaitQuery("DELETE FROM "+ tableLiveMatch +" WHERE 1");
+        await connection.awaitQuery("INSERT INTO " + tableLiveMatch + " (content) VALUES (?)",[content]);
+    } catch (err) {
+        console.log(err);
+        fs.writeFile('var/log/exception.log', JSON.stringify(err), function (error) {
+            console.log('Write error successfully.');
+        });
+    }
+    await pool.awaitEnd();
+}
+
 async function crawlLiveMatch(url, fileIndex) {
     self = this;
-    const browser = await puppeteer.launch({ headless: true,
+    const browser = await puppeteer.launch({ headless: false,
         defaultViewport: null, 
         args:[
         '--start-maximized'
@@ -77,4 +95,6 @@ async function crawlLiveMatch(url, fileIndex) {
         return data;
     });
     fs.writeFileSync('result_text/' + 'data'+fileIndex+'.html', liveData);
+
+    return liveData;
 }
