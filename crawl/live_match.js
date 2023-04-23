@@ -32,7 +32,7 @@ async function updateContent(content) {
 
 async function crawlLiveMatch(url, fileIndex) {
     self = this;
-    const browser = await puppeteer.launch({ headless: false,
+    const browser = await puppeteer.launch({ headless: true,
         defaultViewport: null, 
         args:[
         '--start-maximized'
@@ -49,6 +49,7 @@ async function crawlLiveMatch(url, fileIndex) {
     let liveData = await page.evaluate(() => {
         let regOnclick = /onclick="(.*?)"/g;
         let regAds = /<tr id="tr_ad(.*?)class="adtext-bg">(.*?)<\/tr>/g;
+        let regAds2 = /<tr style="display:" (.*?)class="adtext-bg">(.*?)<\/tr>/g;
         let regF = /<tr id="trF(.*?)style="display:none"(.*?)<\/tr>/g;
         let regDisplayNoneA = /<tr  style="display:none"><\/tr>/g;
         let regDisplayNoneB = /<tr  style="display:none"(.*?)<\/tr>/g;
@@ -69,9 +70,12 @@ async function crawlLiveMatch(url, fileIndex) {
         let regImgTv = /\/images\/Vn\/tv.png/g;
         let regOddsHead = /class="oddsHead">(.*?)<\/td>/g;
         let regStatistic = /<td class="data_td">Số liệu<\/td>/g;
+        let regAlignMid = /class="tds"/g;
+        let regHandpoint = /class="blue handpoint"/g;
         let data = document.getElementById('live').outerHTML;
         data = data.replace(regOnclick, "")
                     .replace(regAds, "")
+                    .replace(regAds2, "")
                     .replace(regF, "")
                     .replace(regfbHead, "")
                     .replace(regOdds, "")
@@ -86,12 +90,14 @@ async function crawlLiveMatch(url, fileIndex) {
                     .replace(regOnmouseout, "")
                     .replace(regOnmouseenter, "")
                     .replace(regOnmouseve, "")
-                    .replace(regImgIn, "/pub/images/bling.gif")
-                    .replace(regImgStarOff, "/pub/images/star_off.png")
-                    .replace(regImgStarOn, "/pub/images/star_on.png")
+                    .replace(regImgIn, "/images/bling.gif")
+                    .replace(regImgStarOff, "/images/star_off.png")
+                    .replace(regImgStarOn, "/images/star_on.png")
                     .replace(regImgTv, "")
                     .replace(regOddsHead, "</td>")
-                    .replace(regStatistic, "</td>");
+                    .replace(regStatistic, "</td>")
+                    .replace(regAlignMid, `class="tds align-middle"`)
+                    .replace(regHandpoint, `class="blue handpoint" style="text-align:center;"`);
         return data;
     });
     fs.writeFileSync('result_text/' + 'data'+fileIndex+'.html', liveData);

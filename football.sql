@@ -31,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `club_entity` (
   `entity_id` int NOT NULL,
   `name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `club_entity`
@@ -50,7 +50,7 @@ CREATE TABLE `eav_entity_type` (
   `entity_type_id` smallint NOT NULL,
   `entity_type_code` varchar(50) DEFAULT NULL,
   `entity_table` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `eav_entity_type`
@@ -69,7 +69,7 @@ INSERT INTO `eav_entity_type` (`entity_type_id`, `entity_type_code`, `entity_tab
 CREATE TABLE `league_club` (
   `league_id` int NOT NULL,
   `club_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -80,7 +80,7 @@ CREATE TABLE `league_club` (
 CREATE TABLE `league_entity` (
   `entity_id` int NOT NULL,
   `name` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `league_entity`
@@ -348,7 +348,7 @@ CREATE TABLE `less_position_but_higher_odd_match` (
   `result` int NOT NULL COMMENT '3 is draw, 2 is not set, 1 is win, 0 is lose, 4 is not found',
   `position_range` int NOT NULL,
   `odd` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `less_position_but_higher_odd_match`
@@ -906,7 +906,7 @@ CREATE TABLE `match_result_entity` (
   `away_corner` varchar(200) DEFAULT NULL,
   `total_corner` varchar(200) DEFAULT NULL,
   `odd` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `match_result_entity`
@@ -3655,7 +3655,7 @@ CREATE TABLE `new_match_today` (
   `away_position` smallint NOT NULL,
   `odd` varchar(50) NOT NULL,
   `odd_converted` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `new_match_today`
@@ -5917,7 +5917,7 @@ CREATE TABLE `random_list` (
   `match_count` int NOT NULL,
   `odd` varchar(200) NOT NULL,
   `result` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `random_list`
@@ -6036,7 +6036,7 @@ CREATE TABLE `random_list_item` (
   `entity_id` int NOT NULL,
   `list_id` int NOT NULL,
   `match_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `random_list_item`
