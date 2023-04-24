@@ -68,7 +68,7 @@ async function crawlLiveMatch(url, fileIndex) {
         let regImgStarOff = /\/images\/star_off.png/g;
         let regImgStarOn = /\/images\/star_on.png/g;
         let regImgTv = /\/images\/Vn\/tv.png/g;
-        let regOddsHead = /class="oddsHead">(.*?)<\/td>/g;
+        let regOddsHead = /colspan="3" class="oddsHead">(.*?)<\/td>/g;
         let regStatistic = /<td class="data_td">Số liệu<\/td>/g;
         let regAlignMid = /class="tds"/g;
         let regHandpoint = /class="blue handpoint"/g;
@@ -94,7 +94,7 @@ async function crawlLiveMatch(url, fileIndex) {
                     .replace(regImgStarOff, "/images/star_off.png")
                     .replace(regImgStarOn, "/images/star_on.png")
                     .replace(regImgTv, "")
-                    .replace(regOddsHead, "</td>")
+                    .replace(regOddsHead, `colspan="6">FT HDP/OU</td>`)
                     .replace(regStatistic, "</td>")
                     .replace(regAlignMid, `class="tds align-middle"`)
                     .replace(regHandpoint, `class="blue handpoint" style="text-align:center;"`);
