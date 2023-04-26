@@ -75,6 +75,7 @@ async function crawlLiveMatch(url, fileIndex) {
         let regTips = /Tips/g;
         let regScoreTitle = /<tr  class="scoretitle"(.*?)<\/tr>/g;
         let regResultAtLiveMatch = /<tr  class="result-split".+<\/tr>/g;
+        let regWidth = /width="6%"/g;
         let data = document.getElementById('live').outerHTML;
         data = data.replace(regOnclick, "")
                     .replace(regAds, "")
@@ -103,7 +104,8 @@ async function crawlLiveMatch(url, fileIndex) {
                     .replace(regHandpoint, `class="blue handpoint" style="text-align:center;"`)
                     .replace(regTips, "-")
                     .replace(regScoreTitle, "")
-                    .replace(regResultAtLiveMatch, "");
+                    .replace(regResultAtLiveMatch, "")
+                    .replace(regWidth, `width="4%"`);
         return data;
     });
     fs.writeFileSync('result_text/' + 'data'+fileIndex+'.html', liveData);
