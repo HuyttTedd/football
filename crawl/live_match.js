@@ -10,22 +10,22 @@ const liveUrl = 'https://www.bongdalu4.com/';
 const liveTable = require("../model/resourceModel/liveMatchContent.js");
 (async function run() {
     let time = new Date().getTime();
-    let content = await crawlLiveMatch(liveUrl, time);
-    await updateContent(content);
+    let matchData = await crawlLiveMatch(liveUrl, time);
+    let content = matchData[0];
+    let json = matchData[1];
+    await updateContent(content, json);
     process.exit(1);
 })();
 
-async function updateContent(content) {
+async function updateContent(content, json) {
     const connection = await pool.awaitGetConnection();
     try {
         let tableLiveMatch = liveTable();
         await connection.awaitQuery("DELETE FROM "+ tableLiveMatch +" WHERE 1");
-        await connection.awaitQuery("INSERT INTO " + tableLiveMatch + " (content) VALUES (?)",[content]);
+        await connection.awaitQuery("INSERT INTO " + tableLiveMatch + " (content,match_data_json) VALUES (?,?)",[content,JSON.stringify(json)]);
     } catch (err) {
         console.log(err);
-        fs.writeFile('var/log/exception.log', JSON.stringify(err), function (error) {
-            console.log('Write error successfully.');
-        });
+        fs.writeFileSync('var/log/exception.log', JSON.stringify(err));
     }
     await pool.awaitEnd();
 }
@@ -45,15 +45,60 @@ async function crawlLiveMatch(url, fileIndex) {
         document.querySelector('#li_ShowAll').click();
     });
 
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(5000);
+    //end crawl data json
+
     let liveData = await page.evaluate(() => {
+        //start crawl data json
+        let jsonMatchData = {};
+        const NULL_STATUS = "undefined";
+        document.querySelectorAll('[matchid]').forEach(function (elm) {
+        if (elm.className.includes('Leaguestitle')) {
+            return;
+        }
+        let matchId = elm.getAttribute("matchid");
+        let TdData = elm.querySelectorAll('td');
+        let statusTime = TdData[3]?.innerText ? TdData[3]?.innerText : NULL_STATUS;
+        statusTime = " " ? "" : statusTime;
+        jsonMatchData[matchId] = {};
+        jsonMatchData[matchId].status_time = statusTime;
+        //check score live
+        let score = TdData[6]?.firstChild.innerText ? TdData[6]?.firstChild.innerText : NULL_STATUS;
+        score = 'Tips' ? '-' : score;
+        jsonMatchData[matchId].score_live = score;
+        //check corner
+        let corner = TdData[8]?.firstChild.innerText ? TdData[8]?.firstChild.innerText : NULL_STATUS;
+        jsonMatchData[matchId].corner = corner;
+        // check ht score
+        let htScore = TdData[8]?.childNodes[1]?.innerText ? TdData[8]?.childNodes[1].innerText : NULL_STATUS;
+        jsonMatchData[matchId].ht_score = htScore;
+        // check odd1
+        let data11 = TdData[10]?.firstChild.innerText ? TdData[10]?.firstChild.innerText : NULL_STATUS;
+        let data12 = TdData[10]?.childNodes[1]?.innerText ? TdData[10]?.childNodes[1]?.innerText : NULL_STATUS;
+        jsonMatchData[matchId].odd1 = {};
+        jsonMatchData[matchId].odd1.data1 = data11;
+        jsonMatchData[matchId].odd1.data2 = data12;
+        // check odd2
+        let data21 = TdData[11]?.firstChild.innerText ? TdData[11]?.firstChild.innerText : NULL_STATUS;
+        let data22 = TdData[11]?.childNodes[1]?.innerText ? TdData[11]?.childNodes[1]?.innerText : NULL_STATUS;
+        jsonMatchData[matchId].odd2 = {};
+        jsonMatchData[matchId].odd2.data1 = data21;
+        jsonMatchData[matchId].odd2.data2 = data22;
+        // check odd3
+        let data31 = TdData[12]?.firstChild.innerText ? TdData[12]?.firstChild.innerText : NULL_STATUS;
+        let data32 = TdData[12]?.childNodes[1]?.innerText ? TdData[12]?.childNodes[1]?.innerText : NULL_STATUS;
+        jsonMatchData[matchId].odd3 = {};
+        jsonMatchData[matchId].odd3.data1 = data31;
+        jsonMatchData[matchId].odd3.data2 = data32;
+        });
+
         let regOnclick = /onclick="(.*?)"/g;
         let regAds = /<tr id="tr_ad(.*?)class="adtext-bg">(.*?)<\/tr>/g;
         let regAds2 = /<tr style="display:" (.*?)class="adtext-bg">(.*?)<\/tr>/g;
         let regF = /<tr id="trF(.*?)style="display:none"(.*?)<\/tr>/g;
         let regDisplayNoneA = /<tr  style="display:none"><\/tr>/g;
         let regDisplayNoneB = /<tr  style="display:none"(.*?)<\/tr>/g;
-        let regId = /id="(.*?)"/g;
+        let regId = /[^match]id="(.*?)"/g;
         let regfbHead = / fbHead/g;
         let regOdds = /odds="(.*?)"/g;
         let regSclass = /sclass/g;
@@ -73,8 +118,8 @@ async function crawlLiveMatch(url, fileIndex) {
         let regAlignMid = /class="tds"/g;
         let regHandpoint = /class="blue handpoint"/g;
         let regTips = /Tips/g;
-        let regScoreTitle = /<tr  class="scoretitle"(.*?)<\/tr>/g;
-        let regResultAtLiveMatch = /<tr  class="result-split".+<\/tr>/g;
+        let regScoreTitle = /<tr class="scoretitle"(.*?)<\/tr>/g;
+        let regResultAtLiveMatch = /<tr class="result-split".+<\/tr>/g;
         let regWidth = /width="6%"/g;
         let data = document.getElementById('live').outerHTML;
         data = data.replace(regOnclick, "")
@@ -104,11 +149,11 @@ async function crawlLiveMatch(url, fileIndex) {
                     .replace(regHandpoint, `class="blue handpoint" style="text-align:center;"`)
                     .replace(regTips, "-")
                     .replace(regScoreTitle, "")
-                    .replace(regResultAtLiveMatch, "")
+                    // .replace(regResultAtLiveMatch, "")
                     .replace(regWidth, `width="4%"`);
-        return data;
+        return [data, jsonMatchData];
     });
-    fs.writeFileSync('result_text/' + 'data'+fileIndex+'.html', liveData);
+    // fs.writeFileSync('result_text/' + 'data'+fileIndex+'.html', liveData[0]);
 
     return liveData;
 }
