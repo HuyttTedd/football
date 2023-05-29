@@ -47,8 +47,16 @@ async function crawlLiveMatch(url, fileIndex) {
 
     await page.waitForTimeout(5000);
     //end crawl data json
-
     let liveData = await page.evaluate(() => {
+        function filterEmptyValueOdd(odd) {
+            if (odd == 0 && odd.length == 1) {
+              odd = "";
+            }
+
+            return odd;
+        }
+
+        var resultArray = ["FT", "Treo", "Hoãn", "HT", "Hiệp phụ"];
         //start crawl data json
         let jsonMatchData = {};
         const NULL_STATUS = "undefined";
@@ -58,14 +66,26 @@ async function crawlLiveMatch(url, fileIndex) {
         }
         let matchId = elm.getAttribute("matchid");
         let TdData = elm.querySelectorAll('td');
-        let statusTime = TdData[3]?.innerText ? TdData[3]?.innerText : NULL_STATUS;
-        statusTime = " " ? "" : statusTime;
+        let statusTime = TdData[3]?.innerHTML ? TdData[3]?.innerHTML : NULL_STATUS;
+        // if (!resultArray.includes(statusTime) && statusTime == 0 && statusTime.length == 1) {
+        //     statusTime = "";
+        // }
         jsonMatchData[matchId] = {};
         jsonMatchData[matchId].status_time = statusTime;
         //check score live
         let score = TdData[6]?.firstChild.innerText ? TdData[6]?.firstChild.innerText : NULL_STATUS;
-        score = 'Tips' ? '-' : score;
+        // score = 'Tips' ? '-' : score;
+        if (score == 'Tips') {
+            score = '-';
+        }
         jsonMatchData[matchId].score_live = score;
+
+        //check booking
+        let bookingHome = TdData[5]?.innerHTML ? TdData[5]?.innerHTML : NULL_STATUS;
+        let bookingAway = TdData[7]?.innerHTML ? TdData[7]?.innerHTML : NULL_STATUS;
+        jsonMatchData[matchId].booking = {};
+        jsonMatchData[matchId].booking.home = bookingHome;
+        jsonMatchData[matchId].booking.away = bookingAway;
         //check corner
         let corner = TdData[8]?.firstChild.innerText ? TdData[8]?.firstChild.innerText : NULL_STATUS;
         jsonMatchData[matchId].corner = corner;
@@ -76,6 +96,8 @@ async function crawlLiveMatch(url, fileIndex) {
         let data11 = TdData[10]?.firstChild.innerText ? TdData[10]?.firstChild.innerText : NULL_STATUS;
         let data12 = TdData[10]?.childNodes[1]?.innerText ? TdData[10]?.childNodes[1]?.innerText : NULL_STATUS;
         jsonMatchData[matchId].odd1 = {};
+        data11 = filterEmptyValueOdd(data11);
+        data12 = filterEmptyValueOdd(data12);
         jsonMatchData[matchId].odd1.data1 = data11;
         jsonMatchData[matchId].odd1.data2 = data12;
         // check odd2
@@ -88,6 +110,8 @@ async function crawlLiveMatch(url, fileIndex) {
         let data31 = TdData[12]?.firstChild.innerText ? TdData[12]?.firstChild.innerText : NULL_STATUS;
         let data32 = TdData[12]?.childNodes[1]?.innerText ? TdData[12]?.childNodes[1]?.innerText : NULL_STATUS;
         jsonMatchData[matchId].odd3 = {};
+        data31 = filterEmptyValueOdd(data31);
+        data32 = filterEmptyValueOdd(data32);
         jsonMatchData[matchId].odd3.data1 = data31;
         jsonMatchData[matchId].odd3.data2 = data32;
         });
@@ -139,7 +163,7 @@ async function crawlLiveMatch(url, fileIndex) {
                     .replace(regOnmouseout, "")
                     .replace(regOnmouseenter, "")
                     .replace(regOnmouseve, "")
-                    .replace(regImgIn, "/images/bling.gif")
+                    // .replace(regImgIn, "/images/bling.gif")
                     .replace(regImgStarOff, "/images/star_off.png")
                     .replace(regImgStarOn, "/images/star_on.png")
                     .replace(regImgTv, "")
