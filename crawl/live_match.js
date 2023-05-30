@@ -81,11 +81,18 @@ async function crawlLiveMatch(url, fileIndex) {
         jsonMatchData[matchId].score_live = score;
 
         //check booking
-        let bookingHome = TdData[5]?.innerHTML ? TdData[5]?.innerHTML : NULL_STATUS;
-        let bookingAway = TdData[7]?.innerHTML ? TdData[7]?.innerHTML : NULL_STATUS;
+        let bookingHomeYellow = TdData[5]?.childNodes[1]?.innerHTML ? TdData[5]?.childNodes[1]?.innerHTML : NULL_STATUS;
+        let bookingHomeRed = TdData[5]?.childNodes[2]?.innerHTML ? TdData[5]?.childNodes[2]?.innerHTML : NULL_STATUS;
+        let bookingAwayYellow = TdData[5]?.childNodes[2]?.innerHTML ? TdData[5]?.childNodes[2]?.innerHTML : NULL_STATUS;
+        let bookingAwayRed = TdData[5]?.childNodes[3]?.innerHTML ? TdData[5]?.childNodes[3]?.innerHTML : NULL_STATUS;
         jsonMatchData[matchId].booking = {};
-        jsonMatchData[matchId].booking.home = bookingHome;
-        jsonMatchData[matchId].booking.away = bookingAway;
+        jsonMatchData[matchId].booking = {};
+        jsonMatchData[matchId].booking.home = {};
+        jsonMatchData[matchId].booking.away = {};
+        jsonMatchData[matchId].booking.home.yellow = bookingHomeYellow;
+        jsonMatchData[matchId].booking.home.red = bookingHomeRed;
+        jsonMatchData[matchId].booking.away.yellow = bookingAwayYellow;
+        jsonMatchData[matchId].booking.away.red = bookingAwayRed;
         //check corner
         let corner = TdData[8]?.firstChild.innerText ? TdData[8]?.firstChild.innerText : NULL_STATUS;
         jsonMatchData[matchId].corner = corner;

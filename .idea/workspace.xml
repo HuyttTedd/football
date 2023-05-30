@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3d3c94ee-6c9c-4de2-8a26-4675b27f90ca" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawl/live_match.js" beforeDir="false" afterPath="$PROJECT_DIR$/crawl/live_match.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +25,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../nextjs/football" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../eshop/eshop" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -60,7 +59,8 @@
       <workItem from="1680319180550" duration="924000" />
       <workItem from="1680391471277" duration="663000" />
       <workItem from="1681875066439" duration="331000" />
-      <workItem from="1685332783876" duration="786000" />
+      <workItem from="1685332783876" duration="1553000" />
+      <workItem from="1685420429735" duration="27000" />
     </task>
     <task id="LOCAL-00001" summary="Fix crawl today match not have league name">
       <created>1681875134464</created>
