@@ -81,10 +81,10 @@ async function crawlLiveMatch(url, fileIndex) {
         jsonMatchData[matchId].score_live = score;
 
         //check booking
-        let bookingHomeYellow = TdData[5]?.childNodes[1]?.innerHTML ? TdData[5]?.childNodes[1]?.innerHTML : NULL_STATUS;
-        let bookingHomeRed = TdData[5]?.childNodes[2]?.innerHTML ? TdData[5]?.childNodes[2]?.innerHTML : NULL_STATUS;
-        let bookingAwayYellow = TdData[5]?.childNodes[2]?.innerHTML ? TdData[5]?.childNodes[2]?.innerHTML : NULL_STATUS;
-        let bookingAwayRed = TdData[5]?.childNodes[3]?.innerHTML ? TdData[5]?.childNodes[3]?.innerHTML : NULL_STATUS;
+        let bookingHomeYellow = TdData[5]?.childNodes[1]?.innerText ? TdData[5]?.childNodes[1]?.innerText : NULL_STATUS;
+        let bookingHomeRed = TdData[5]?.childNodes[2]?.innerText ? TdData[5]?.childNodes[2]?.innerText : NULL_STATUS;
+        let bookingAwayYellow = TdData[7]?.childNodes[3]?.innerText ? TdData[7]?.childNodes[3]?.innerText : NULL_STATUS;
+        let bookingAwayRed = TdData[7]?.childNodes[2]?.innerText ? TdData[7]?.childNodes[2]?.innerText : NULL_STATUS;
         jsonMatchData[matchId].booking = {};
         jsonMatchData[matchId].booking = {};
         jsonMatchData[matchId].booking.home = {};
