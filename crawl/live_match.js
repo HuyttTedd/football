@@ -150,7 +150,7 @@ async function crawlLiveMatch(url, fileIndex) {
         let regHandpoint = /class="blue handpoint"/g;
         let regTips = /Tips/g;
         let regScoreTitle = /<tr class="scoretitle"(.*?)<\/tr>/g;
-        let regResultAtLiveMatch = /<tr class="result-split".+<\/tr>/g;
+        let regResultAtLiveMatch = /<tr class="result-split"(.*?)<\/tbody>/g;
         let regWidth = /width="6%"/g;
         let data = document.getElementById('live').outerHTML;
         data = data.replace(regOnclick, "")
@@ -180,7 +180,7 @@ async function crawlLiveMatch(url, fileIndex) {
                     .replace(regHandpoint, `class="blue handpoint" style="text-align:center;"`)
                     .replace(regTips, "-")
                     .replace(regScoreTitle, "")
-                    // .replace(regResultAtLiveMatch, "")
+                    .replace(regResultAtLiveMatch, "</tbody>")
                     .replace(regWidth, `width="4%"`);
         return [data, jsonMatchData];
     });
