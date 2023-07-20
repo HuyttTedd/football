@@ -43,6 +43,7 @@ async function crawlLiveMatch(url, fileIndex) {
     await page.waitForTimeout(6500);
     await page.evaluate(() => {
         document.querySelector('#li_ShowAll').click();
+        document.querySelector('#switchLeagueBlock .on').click();
     });
 
     await page.waitForTimeout(5000);
