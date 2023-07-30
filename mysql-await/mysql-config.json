@@ -2,7 +2,7 @@
     "connectionLimit" : 9999990,
     "host"            : "localhost",
     "user"            : "root",
-    "password"        : "admin123",
-    "database"        : "football",
-    "port": 3309
+    "password"        : "",
+    "database"        : "soccer_fly",
+    "port": 3306
 }

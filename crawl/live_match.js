@@ -46,7 +46,7 @@ async function crawlLiveMatch(url, fileIndex) {
         document.querySelector('#switchLeagueBlock .on').click();
     });
 
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(9000);
     //end crawl data json
     let liveData = await page.evaluate(() => {
         function filterEmptyValueOdd(odd) {

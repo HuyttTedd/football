@@ -1,5 +1,5 @@
 function getMainTable() { 
-    return "live_content"; 
+    return "crawl_live_content"; 
 }
 
 module.exports = getMainTable;
